@@ -1,0 +1,24 @@
+{
+  "name": "random_restaurant",
+  "version": "1.0.0",
+  "description": "Picks a random restaurant from list using react",
+  "main": "index.js",
+  "author": "Keenan Ray",
+  "license": "MIT",
+  "scripts": {
+    "serv": "live-server public/",
+    "build": "webpack --watch",
+    "build-babel": "babel src/index.js --out-file=public/scripts/index.js --presets=env,react --watch"
+  },
+  "dependencies": {
+    "babel-cli": "6.24.1",
+    "babel-core": "6.25.0",
+    "babel-loader": "7.1.1",
+    "babel-preset-env": "1.5.2",
+    "babel-preset-react": "6.24.1",
+    "live-server": "^1.2.1",
+    "react": "16.0.0",
+    "react-dom": "16.0.0",
+    "webpack": "3.1.0"
+  }
+}
