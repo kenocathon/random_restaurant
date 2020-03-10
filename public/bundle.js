@@ -1048,8 +1048,9 @@ var App = function (_React$Component) {
 
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
     _this.handleRandomPick = _this.handleRandomPick.bind(_this);
+    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
     _this.state = {
-      options: ["Olive Garden", "Red Lobster", "Longhorn"],
+      options: [],
       guests: 3
     };
     return _this;
@@ -1072,6 +1073,21 @@ var App = function (_React$Component) {
       alert("You must go to " + option);
     }
   }, {
+    key: "handleAddRestaurant",
+    value: function handleAddRestaurant(newRestaurant) {
+      if (!newRestaurant) {
+        return "Enter valid value to add a restaurant";
+      } else if (this.state.options.indexOf(newRestaurant) > -1) {
+        return "This option already exists";
+      }
+
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.concat(newRestaurant)
+        };
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -1081,7 +1097,10 @@ var App = function (_React$Component) {
           title: "Random Restaurant",
           subtitle: "Where will your next meal be?"
         }),
-        _react2.default.createElement(AddRestaurant, { guests: 1 }),
+        _react2.default.createElement(AddRestaurant, {
+          guests: this.state.guests,
+          handleAddRestaurant: this.handleAddRestaurant
+        }),
         _react2.default.createElement(Options, {
           options: this.state.options,
           handleDeleteOptions: this.handleDeleteOptions
@@ -1228,10 +1247,16 @@ var Option = function (_React$Component5) {
 var AddRestaurant = function (_React$Component6) {
   _inherits(AddRestaurant, _React$Component6);
 
-  function AddRestaurant() {
+  function AddRestaurant(props) {
     _classCallCheck(this, AddRestaurant);
 
-    return _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).apply(this, arguments));
+    var _this6 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
+
+    _this6.handleAddRestaurant = _this6.handleAddRestaurant.bind(_this6);
+    _this6.state = {
+      error: undefined
+    };
+    return _this6;
   }
 
   _createClass(AddRestaurant, [{
@@ -1239,27 +1264,38 @@ var AddRestaurant = function (_React$Component6) {
     value: function handleAddRestaurant(e) {
       e.preventDefault();
       var newRestaurant = e.target.elements.restaurant.value.trim();
-      if (newRestaurant) {
-        alert(newRestaurant);
-      }
+      var error = this.props.handleAddRestaurant(newRestaurant);
+
+      this.setState(function () {
+        return { error: error };
+      });
     }
   }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
-        "form",
-        { onSubmit: this.handleAddRestaurant },
-        _react2.default.createElement(
-          "label",
+        "div",
+        null,
+        this.state.error && _react2.default.createElement(
+          "p",
           null,
-          "Guest: ",
-          this.props.guests
+          this.state.error
         ),
-        _react2.default.createElement("input", { type: "text", name: "restaurant" }),
         _react2.default.createElement(
-          "button",
-          null,
-          "Add"
+          "form",
+          { onSubmit: this.handleAddRestaurant },
+          _react2.default.createElement(
+            "label",
+            null,
+            "Guest: ",
+            this.props.guests
+          ),
+          _react2.default.createElement("input", { type: "text", name: "restaurant" }),
+          _react2.default.createElement(
+            "button",
+            null,
+            "Add"
+          )
         )
       );
     }

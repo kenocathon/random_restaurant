@@ -8,8 +8,9 @@ class App extends React.Component {
     super(props);
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handleRandomPick = this.handleRandomPick.bind(this);
+    this.handleAddRestaurant = this.handleAddRestaurant.bind(this);
     this.state = {
-      options: ["Olive Garden", "Red Lobster", "Longhorn"],
+      options: [],
       guests: 3
     };
   }
@@ -27,6 +28,19 @@ class App extends React.Component {
     alert("You must go to " + option);
   }
 
+  handleAddRestaurant(newRestaurant) {
+    if (!newRestaurant) {
+      return "Enter valid value to add a restaurant";
+    } else if (this.state.options.indexOf(newRestaurant) > -1) {
+      return "This option already exists";
+    }
+
+    this.setState(prevState => {
+      return {
+        options: prevState.options.concat(newRestaurant)
+      };
+    });
+  }
   render() {
     return (
       <div>
@@ -34,7 +48,10 @@ class App extends React.Component {
           title="Random Restaurant"
           subtitle="Where will your next meal be?"
         />
-        <AddRestaurant guests={1} />
+        <AddRestaurant
+          guests={this.state.guests}
+          handleAddRestaurant={this.handleAddRestaurant}
+        />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
@@ -106,20 +123,32 @@ class Option extends React.Component {
 }
 
 class AddRestaurant extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleAddRestaurant = this.handleAddRestaurant.bind(this);
+    this.state = {
+      error: undefined
+    };
+  }
   handleAddRestaurant(e) {
     e.preventDefault();
     const newRestaurant = e.target.elements.restaurant.value.trim();
-    if (newRestaurant) {
-      alert(newRestaurant);
-    }
+    const error = this.props.handleAddRestaurant(newRestaurant);
+
+    this.setState(() => {
+      return { error };
+    });
   }
   render() {
     return (
-      <form onSubmit={this.handleAddRestaurant}>
-        <label>Guest: {this.props.guests}</label>
-        <input type="text" name="restaurant" />
-        <button>Add</button>
-      </form>
+      <div>
+        {this.state.error && <p>{this.state.error}</p>}
+        <form onSubmit={this.handleAddRestaurant}>
+          <label>Guest: {this.props.guests}</label>
+          <input type="text" name="restaurant" />
+          <button>Add</button>
+        </form>
+      </div>
     );
   }
 }
