@@ -4,18 +4,46 @@ import ReactDOM from "react-dom";
 //import App from "./components/App";
 
 class App extends React.Component {
-  render() {
-    const options = ["Olive Garden", "Red Lobster", "Longhorn"];
+  constructor(props) {
+    super(props);
+    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
+    this.handleRandomPick = this.handleRandomPick.bind(this);
+    this.state = {
+      options: ["Olive Garden", "Red Lobster", "Longhorn"],
+      guests: 3
+    };
+  }
+  handleDeleteOptions() {
+    this.setState(() => {
+      return {
+        options: []
+      };
+    });
+  }
 
+  handleRandomPick() {
+    const randomNum = Math.floor(Math.random() * this.state.options.length);
+    const option = this.state.options[randomNum];
+    alert("You must go to " + option);
+  }
+
+  render() {
     return (
       <div>
         <Header
           title="Random Restaurant"
           subtitle="Where will your next meal be?"
         />
-        <Action />
-        <Options options={options} />
-        <AddOption />
+        <AddRestaurant guests={1} />
+        <Options
+          options={this.state.options}
+          handleDeleteOptions={this.handleDeleteOptions}
+        />
+
+        <Action
+          checkOptions={this.state.options.length == this.state.guests}
+          handleRandomPick={this.handleRandomPick}
+        />
       </div>
     );
   }
@@ -42,17 +70,20 @@ const Hamburger = () => {
 };
 
 class Action extends React.Component {
-  handlePick() {
-    alert("handlePick");
-  }
   render() {
     return (
       <div>
-        <button onClick={this.handlePick}>What Should I do?</button>
+        <button
+          onClick={this.props.handleRandomPick}
+          disabled={!this.props.checkOptions}
+        >
+          Pick A Restaurant
+        </button>
       </div>
     );
   }
 }
+
 class Options extends React.Component {
   render() {
     return (
@@ -62,6 +93,7 @@ class Options extends React.Component {
             <Option key={option} optionText={option} />
           </p>
         ))}
+        <button onClick={this.props.handleDeleteOptions}>Clear All</button>
       </div>
     );
   }
@@ -69,13 +101,26 @@ class Options extends React.Component {
 
 class Option extends React.Component {
   render() {
-    return <div>{this.props.optionText}</div>;
+    return this.props.optionText;
   }
 }
 
-class AddOption extends React.Component {
+class AddRestaurant extends React.Component {
+  handleAddRestaurant(e) {
+    e.preventDefault();
+    const newRestaurant = e.target.elements.restaurant.value.trim();
+    if (newRestaurant) {
+      alert(newRestaurant);
+    }
+  }
   render() {
-    return <div>Add Option Here</div>;
+    return (
+      <form onSubmit={this.handleAddRestaurant}>
+        <label>Guest: {this.props.guests}</label>
+        <input type="text" name="restaurant" />
+        <button>Add</button>
+      </form>
+    );
   }
 }
 

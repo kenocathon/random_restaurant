@@ -1041,17 +1041,39 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var App = function (_React$Component) {
   _inherits(App, _React$Component);
 
-  function App() {
+  function App(props) {
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).apply(this, arguments));
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+    _this.handleRandomPick = _this.handleRandomPick.bind(_this);
+    _this.state = {
+      options: ["Olive Garden", "Red Lobster", "Longhorn"],
+      guests: 3
+    };
+    return _this;
   }
 
   _createClass(App, [{
+    key: "handleDeleteOptions",
+    value: function handleDeleteOptions() {
+      this.setState(function () {
+        return {
+          options: []
+        };
+      });
+    }
+  }, {
+    key: "handleRandomPick",
+    value: function handleRandomPick() {
+      var randomNum = Math.floor(Math.random() * this.state.options.length);
+      var option = this.state.options[randomNum];
+      alert("You must go to " + option);
+    }
+  }, {
     key: "render",
     value: function render() {
-      var options = ["Olive Garden", "Red Lobster", "Longhorn"];
-
       return _react2.default.createElement(
         "div",
         null,
@@ -1059,9 +1081,15 @@ var App = function (_React$Component) {
           title: "Random Restaurant",
           subtitle: "Where will your next meal be?"
         }),
-        _react2.default.createElement(Action, null),
-        _react2.default.createElement(Options, { options: options }),
-        _react2.default.createElement(AddOption, null)
+        _react2.default.createElement(AddRestaurant, { guests: 1 }),
+        _react2.default.createElement(Options, {
+          options: this.state.options,
+          handleDeleteOptions: this.handleDeleteOptions
+        }),
+        _react2.default.createElement(Action, {
+          checkOptions: this.state.options.length == this.state.guests,
+          handleRandomPick: this.handleRandomPick
+        })
       );
     }
   }]);
@@ -1124,11 +1152,6 @@ var Action = function (_React$Component3) {
   }
 
   _createClass(Action, [{
-    key: "handlePick",
-    value: function handlePick() {
-      alert("handlePick");
-    }
-  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -1136,8 +1159,11 @@ var Action = function (_React$Component3) {
         null,
         _react2.default.createElement(
           "button",
-          { onClick: this.handlePick },
-          "What Should I do?"
+          {
+            onClick: this.props.handleRandomPick,
+            disabled: !this.props.checkOptions
+          },
+          "Pick A Restaurant"
         )
       );
     }
@@ -1167,7 +1193,12 @@ var Options = function (_React$Component4) {
             { key: option },
             _react2.default.createElement(Option, { key: option, optionText: option })
           );
-        })
+        }),
+        _react2.default.createElement(
+          "button",
+          { onClick: this.props.handleDeleteOptions },
+          "Clear All"
+        )
       );
     }
   }]);
@@ -1187,38 +1218,54 @@ var Option = function (_React$Component5) {
   _createClass(Option, [{
     key: "render",
     value: function render() {
-      return _react2.default.createElement(
-        "div",
-        null,
-        this.props.optionText
-      );
+      return this.props.optionText;
     }
   }]);
 
   return Option;
 }(_react2.default.Component);
 
-var AddOption = function (_React$Component6) {
-  _inherits(AddOption, _React$Component6);
+var AddRestaurant = function (_React$Component6) {
+  _inherits(AddRestaurant, _React$Component6);
 
-  function AddOption() {
-    _classCallCheck(this, AddOption);
+  function AddRestaurant() {
+    _classCallCheck(this, AddRestaurant);
 
-    return _possibleConstructorReturn(this, (AddOption.__proto__ || Object.getPrototypeOf(AddOption)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).apply(this, arguments));
   }
 
-  _createClass(AddOption, [{
+  _createClass(AddRestaurant, [{
+    key: "handleAddRestaurant",
+    value: function handleAddRestaurant(e) {
+      e.preventDefault();
+      var newRestaurant = e.target.elements.restaurant.value.trim();
+      if (newRestaurant) {
+        alert(newRestaurant);
+      }
+    }
+  }, {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
-        "div",
-        null,
-        "Add Option Here"
+        "form",
+        { onSubmit: this.handleAddRestaurant },
+        _react2.default.createElement(
+          "label",
+          null,
+          "Guest: ",
+          this.props.guests
+        ),
+        _react2.default.createElement("input", { type: "text", name: "restaurant" }),
+        _react2.default.createElement(
+          "button",
+          null,
+          "Add"
+        )
       );
     }
   }]);
 
-  return AddOption;
+  return AddRestaurant;
 }(_react2.default.Component);
 
 _reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("root"));
