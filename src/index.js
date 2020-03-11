@@ -9,9 +9,10 @@ class App extends React.Component {
     this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
     this.handleRandomPick = this.handleRandomPick.bind(this);
     this.handleAddRestaurant = this.handleAddRestaurant.bind(this);
+    this.handleNumberOfGuests = this.handleNumberOfGuests.bind(this);
     this.state = {
       options: [],
-      guests: 3
+      guests: 1
     };
   }
   handleDeleteOptions() {
@@ -32,7 +33,7 @@ class App extends React.Component {
     if (!newRestaurant) {
       return "Enter valid value to add a restaurant";
     } else if (this.state.options.indexOf(newRestaurant) > -1) {
-      return "This option already exists";
+      return "This restaurant already exists in the list";
     }
 
     this.setState(prevState => {
@@ -41,6 +42,18 @@ class App extends React.Component {
       };
     });
   }
+
+  handleNumberOfGuests(numberOfGuests) {
+    if (!numberOfGuests) {
+      return "Enter the number of guests that will be dining";
+    }
+    this.setState(() => {
+      return {
+        guests: numberOfGuests
+      };
+    });
+  }
+
   render() {
     return (
       <div>
@@ -48,10 +61,8 @@ class App extends React.Component {
           title="Random Restaurant"
           subtitle="Where will your next meal be?"
         />
-        <AddRestaurant
-          guests={this.state.guests}
-          handleAddRestaurant={this.handleAddRestaurant}
-        />
+        <SettingsForm handleNumberOfGuests={this.handleNumberOfGuests} />
+        <AddRestaurant handleAddRestaurant={this.handleAddRestaurant} />
         <Options
           options={this.state.options}
           handleDeleteOptions={this.handleDeleteOptions}
@@ -85,6 +96,43 @@ const Hamburger = () => {
     </div>
   );
 };
+
+class SettingsForm extends React.Component {
+  constructor(props) {
+    super(props);
+    this.handleNumberOfGuests = this.handleNumberOfGuests.bind(this);
+    this.state = {
+      error: undefined
+    };
+  }
+
+  handleNumberOfGuests(event) {
+    event.preventDefault();
+    const numberOfGuests = event.target.elements.guests.value;
+    const error = this.props.handleNumberOfGuests(numberOfGuests);
+
+    this.setState(() => {
+      return { error };
+    });
+  }
+
+  render() {
+    return (
+      <form onSubmit={this.handleNumberOfGuests}>
+        <fieldset>
+          {this.state.error && <p>{this.state.error}</p>}
+          <legend>Settings</legend>
+          <label>Number of guests</label>
+          <input type="number" name="guests" />
+
+          <input type="checkbox" name="randomCheck" />
+          <label>Add a local restaurant to the list</label>
+          <button>Submit</button>
+        </fieldset>
+      </form>
+    );
+  }
+}
 
 class Action extends React.Component {
   render() {
@@ -126,27 +174,35 @@ class AddRestaurant extends React.Component {
   constructor(props) {
     super(props);
     this.handleAddRestaurant = this.handleAddRestaurant.bind(this);
+    this.handleCount = this.handleCount.bind(this);
     this.state = {
-      error: undefined
+      error: undefined,
+      count: 1
     };
   }
   handleAddRestaurant(e) {
     e.preventDefault();
     const newRestaurant = e.target.elements.restaurant.value.trim();
     const error = this.props.handleAddRestaurant(newRestaurant);
-
     this.setState(() => {
       return { error };
     });
+    e.target.elements.restaurant.value = "";
   }
+  handleCount() {
+    this.setState(() => {
+      return { count: this.state.count + 1 };
+    });
+  }
+
   render() {
     return (
       <div>
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.handleAddRestaurant}>
-          <label>Guest: {this.props.guests}</label>
+          <label>Guest: {this.state.count}</label>
           <input type="text" name="restaurant" />
-          <button>Add</button>
+          <button onClick={this.handleCount}>Add</button>
         </form>
       </div>
     );

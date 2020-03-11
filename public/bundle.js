@@ -258,21 +258,6 @@ process.umask = function() { return 0; };
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
-/* WEBPACK VAR INJECTION */(function(process) {
-
-if (process.env.NODE_ENV === 'production') {
-  module.exports = __webpack_require__(17);
-} else {
-  module.exports = __webpack_require__(18);
-}
-
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
-
-/***/ }),
-/* 2 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
 
 
 /**
@@ -311,7 +296,7 @@ emptyFunction.thatReturnsArgument = function (arg) {
 module.exports = emptyFunction;
 
 /***/ }),
-/* 3 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -408,7 +393,7 @@ module.exports = shouldUseNative() ? Object.assign : function (target, source) {
 
 
 /***/ }),
-/* 4 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -432,7 +417,7 @@ module.exports = emptyObject;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
-/* 5 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -489,6 +474,21 @@ function invariant(condition, format, a, b, c, d, e, f) {
 }
 
 module.exports = invariant;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+/* WEBPACK VAR INJECTION */(function(process) {
+
+if (process.env.NODE_ENV === 'production') {
+  module.exports = __webpack_require__(17);
+} else {
+  module.exports = __webpack_require__(18);
+}
+
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(0)))
 
 /***/ }),
@@ -674,7 +674,7 @@ module.exports = ExecutionEnvironment;
 
 
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 
 /**
  * Similar to invariant but only logs a warning if the condition is not met.
@@ -744,7 +744,7 @@ module.exports = warning;
  * @typechecks
  */
 
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 
 /**
  * Upstream version of event listener. Does not take into account specific
@@ -1019,7 +1019,7 @@ if (process.env.NODE_ENV === 'production') {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _react = __webpack_require__(1);
+var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
 
@@ -1049,9 +1049,10 @@ var App = function (_React$Component) {
     _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
     _this.handleRandomPick = _this.handleRandomPick.bind(_this);
     _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
+    _this.handleNumberOfGuests = _this.handleNumberOfGuests.bind(_this);
     _this.state = {
       options: [],
-      guests: 3
+      guests: 1
     };
     return _this;
   }
@@ -1078,12 +1079,24 @@ var App = function (_React$Component) {
       if (!newRestaurant) {
         return "Enter valid value to add a restaurant";
       } else if (this.state.options.indexOf(newRestaurant) > -1) {
-        return "This option already exists";
+        return "This restaurant already exists in the list";
       }
 
       this.setState(function (prevState) {
         return {
           options: prevState.options.concat(newRestaurant)
+        };
+      });
+    }
+  }, {
+    key: "handleNumberOfGuests",
+    value: function handleNumberOfGuests(numberOfGuests) {
+      if (!numberOfGuests) {
+        return "Enter the number of guests that will be dining";
+      }
+      this.setState(function () {
+        return {
+          guests: numberOfGuests
         };
       });
     }
@@ -1097,10 +1110,8 @@ var App = function (_React$Component) {
           title: "Random Restaurant",
           subtitle: "Where will your next meal be?"
         }),
-        _react2.default.createElement(AddRestaurant, {
-          guests: this.state.guests,
-          handleAddRestaurant: this.handleAddRestaurant
-        }),
+        _react2.default.createElement(SettingsForm, { handleNumberOfGuests: this.handleNumberOfGuests }),
+        _react2.default.createElement(AddRestaurant, { handleAddRestaurant: this.handleAddRestaurant }),
         _react2.default.createElement(Options, {
           options: this.state.options,
           handleDeleteOptions: this.handleDeleteOptions
@@ -1161,8 +1172,78 @@ var Hamburger = function Hamburger() {
   );
 };
 
-var Action = function (_React$Component3) {
-  _inherits(Action, _React$Component3);
+var SettingsForm = function (_React$Component3) {
+  _inherits(SettingsForm, _React$Component3);
+
+  function SettingsForm(props) {
+    _classCallCheck(this, SettingsForm);
+
+    var _this3 = _possibleConstructorReturn(this, (SettingsForm.__proto__ || Object.getPrototypeOf(SettingsForm)).call(this, props));
+
+    _this3.handleNumberOfGuests = _this3.handleNumberOfGuests.bind(_this3);
+    _this3.state = {
+      error: undefined
+    };
+    return _this3;
+  }
+
+  _createClass(SettingsForm, [{
+    key: "handleNumberOfGuests",
+    value: function handleNumberOfGuests(event) {
+      event.preventDefault();
+      var numberOfGuests = event.target.elements.guests.value;
+      var error = this.props.handleNumberOfGuests(numberOfGuests);
+
+      this.setState(function () {
+        return { error: error };
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "form",
+        { onSubmit: this.handleNumberOfGuests },
+        _react2.default.createElement(
+          "fieldset",
+          null,
+          this.state.error && _react2.default.createElement(
+            "p",
+            null,
+            this.state.error
+          ),
+          _react2.default.createElement(
+            "legend",
+            null,
+            "Settings"
+          ),
+          _react2.default.createElement(
+            "label",
+            null,
+            "Number of guests"
+          ),
+          _react2.default.createElement("input", { type: "number", name: "guests" }),
+          _react2.default.createElement("input", { type: "checkbox", name: "randomCheck" }),
+          _react2.default.createElement(
+            "label",
+            null,
+            "Add a local restaurant to the list"
+          ),
+          _react2.default.createElement(
+            "button",
+            null,
+            "Submit"
+          )
+        )
+      );
+    }
+  }]);
+
+  return SettingsForm;
+}(_react2.default.Component);
+
+var Action = function (_React$Component4) {
+  _inherits(Action, _React$Component4);
 
   function Action() {
     _classCallCheck(this, Action);
@@ -1191,8 +1272,8 @@ var Action = function (_React$Component3) {
   return Action;
 }(_react2.default.Component);
 
-var Options = function (_React$Component4) {
-  _inherits(Options, _React$Component4);
+var Options = function (_React$Component5) {
+  _inherits(Options, _React$Component5);
 
   function Options() {
     _classCallCheck(this, Options);
@@ -1225,8 +1306,8 @@ var Options = function (_React$Component4) {
   return Options;
 }(_react2.default.Component);
 
-var Option = function (_React$Component5) {
-  _inherits(Option, _React$Component5);
+var Option = function (_React$Component6) {
+  _inherits(Option, _React$Component6);
 
   function Option() {
     _classCallCheck(this, Option);
@@ -1244,19 +1325,21 @@ var Option = function (_React$Component5) {
   return Option;
 }(_react2.default.Component);
 
-var AddRestaurant = function (_React$Component6) {
-  _inherits(AddRestaurant, _React$Component6);
+var AddRestaurant = function (_React$Component7) {
+  _inherits(AddRestaurant, _React$Component7);
 
   function AddRestaurant(props) {
     _classCallCheck(this, AddRestaurant);
 
-    var _this6 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
+    var _this7 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
 
-    _this6.handleAddRestaurant = _this6.handleAddRestaurant.bind(_this6);
-    _this6.state = {
-      error: undefined
+    _this7.handleAddRestaurant = _this7.handleAddRestaurant.bind(_this7);
+    _this7.handleCount = _this7.handleCount.bind(_this7);
+    _this7.state = {
+      error: undefined,
+      count: 1
     };
-    return _this6;
+    return _this7;
   }
 
   _createClass(AddRestaurant, [{
@@ -1265,9 +1348,18 @@ var AddRestaurant = function (_React$Component6) {
       e.preventDefault();
       var newRestaurant = e.target.elements.restaurant.value.trim();
       var error = this.props.handleAddRestaurant(newRestaurant);
-
       this.setState(function () {
         return { error: error };
+      });
+      e.target.elements.restaurant.value = "";
+    }
+  }, {
+    key: "handleCount",
+    value: function handleCount() {
+      var _this8 = this;
+
+      this.setState(function () {
+        return { count: _this8.state.count + 1 };
       });
     }
   }, {
@@ -1288,12 +1380,12 @@ var AddRestaurant = function (_React$Component6) {
             "label",
             null,
             "Guest: ",
-            this.props.guests
+            this.state.count
           ),
           _react2.default.createElement("input", { type: "text", name: "restaurant" }),
           _react2.default.createElement(
             "button",
-            null,
+            { onClick: this.handleCount },
             "Add"
           )
         )
@@ -1320,7 +1412,7 @@ _reactDom2.default.render(_react2.default.createElement(App, null), document.get
  This source code is licensed under the MIT license found in the
  LICENSE file in the root directory of this source tree.
 */
-var f=__webpack_require__(3),p=__webpack_require__(4);__webpack_require__(5);var r=__webpack_require__(2);
+var f=__webpack_require__(2),p=__webpack_require__(3);__webpack_require__(4);var r=__webpack_require__(1);
 function t(a){for(var b=arguments.length-1,d="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,e=0;e<b;e++)d+="\x26args[]\x3d"+encodeURIComponent(arguments[e+1]);b=Error(d+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}
 var u={isMounted:function(){return!1},enqueueForceUpdate:function(){},enqueueReplaceState:function(){},enqueueSetState:function(){}};function v(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}v.prototype.isReactComponent={};v.prototype.setState=function(a,b){"object"!==typeof a&&"function"!==typeof a&&null!=a?t("85"):void 0;this.updater.enqueueSetState(this,a,b,"setState")};v.prototype.forceUpdate=function(a){this.updater.enqueueForceUpdate(this,a,"forceUpdate")};
 function w(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}function x(){}x.prototype=v.prototype;var y=w.prototype=new x;y.constructor=w;f(y,v.prototype);y.isPureReactComponent=!0;function z(a,b,d){this.props=a;this.context=b;this.refs=p;this.updater=d||u}var A=z.prototype=new x;A.constructor=z;f(A,v.prototype);A.unstable_isAsyncReactComponent=!0;A.render=function(){return this.props.children};
@@ -1357,11 +1449,11 @@ if (process.env.NODE_ENV !== "production") {
 
 'use strict';
 
-var objectAssign$1 = __webpack_require__(3);
+var objectAssign$1 = __webpack_require__(2);
 var require$$0 = __webpack_require__(9);
-var emptyObject = __webpack_require__(4);
-var invariant = __webpack_require__(5);
-var emptyFunction = __webpack_require__(2);
+var emptyObject = __webpack_require__(3);
+var invariant = __webpack_require__(4);
+var emptyFunction = __webpack_require__(1);
 var checkPropTypes = __webpack_require__(6);
 
 /**
@@ -3103,7 +3195,7 @@ if (process.env.NODE_ENV === 'production') {
  LICENSE file in the root directory of this source tree.
  Modernizr 3.0.0pre (Custom Build) | MIT
 */
-var aa=__webpack_require__(1);__webpack_require__(5);var l=__webpack_require__(8),n=__webpack_require__(3),ba=__webpack_require__(10),ca=__webpack_require__(2),da=__webpack_require__(4),ea=__webpack_require__(11),fa=__webpack_require__(12),ha=__webpack_require__(13),ia=__webpack_require__(14);
+var aa=__webpack_require__(5);__webpack_require__(4);var l=__webpack_require__(8),n=__webpack_require__(2),ba=__webpack_require__(10),ca=__webpack_require__(1),da=__webpack_require__(3),ea=__webpack_require__(11),fa=__webpack_require__(12),ha=__webpack_require__(13),ia=__webpack_require__(14);
 function w(a){for(var b=arguments.length-1,c="Minified React error #"+a+"; visit http://facebook.github.io/react/docs/error-decoder.html?invariant\x3d"+a,d=0;d<b;d++)c+="\x26args[]\x3d"+encodeURIComponent(arguments[d+1]);b=Error(c+" for the full message or use the non-minified dev environment for full errors and additional helpful warnings.");b.name="Invariant Violation";b.framesToPop=1;throw b;}aa?void 0:w("227");
 function ja(a){switch(a){case "svg":return"http://www.w3.org/2000/svg";case "math":return"http://www.w3.org/1998/Math/MathML";default:return"http://www.w3.org/1999/xhtml"}}
 var ka={Namespaces:{html:"http://www.w3.org/1999/xhtml",mathml:"http://www.w3.org/1998/Math/MathML",svg:"http://www.w3.org/2000/svg"},getIntrinsicNamespace:ja,getChildNamespace:function(a,b){return null==a||"http://www.w3.org/1999/xhtml"===a?ja(b):"http://www.w3.org/2000/svg"===a&&"foreignObject"===b?"http://www.w3.org/1999/xhtml":a}},la=null,oa={};
@@ -3428,18 +3520,18 @@ if (process.env.NODE_ENV !== "production") {
 
 'use strict';
 
-var react = __webpack_require__(1);
-var invariant = __webpack_require__(5);
+var react = __webpack_require__(5);
+var invariant = __webpack_require__(4);
 var ExecutionEnvironment = __webpack_require__(8);
-var _assign = __webpack_require__(3);
+var _assign = __webpack_require__(2);
 var EventListener = __webpack_require__(10);
 var require$$0 = __webpack_require__(9);
 var hyphenateStyleName = __webpack_require__(24);
-var emptyFunction = __webpack_require__(2);
+var emptyFunction = __webpack_require__(1);
 var camelizeStyleName = __webpack_require__(26);
 var performanceNow = __webpack_require__(28);
 var propTypes = __webpack_require__(30);
-var emptyObject = __webpack_require__(4);
+var emptyObject = __webpack_require__(3);
 var checkPropTypes = __webpack_require__(6);
 var shallowEqual = __webpack_require__(11);
 var containsNode = __webpack_require__(12);
@@ -21107,7 +21199,7 @@ exports.typeOf = typeOf;
 
 
 var ReactIs = __webpack_require__(15);
-var assign = __webpack_require__(3);
+var assign = __webpack_require__(2);
 
 var ReactPropTypesSecret = __webpack_require__(7);
 var checkPropTypes = __webpack_require__(6);
