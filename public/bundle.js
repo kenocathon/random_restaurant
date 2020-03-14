@@ -1052,7 +1052,7 @@ var App = function (_React$Component) {
     _this.handleNumberOfGuests = _this.handleNumberOfGuests.bind(_this);
     _this.state = {
       options: [],
-      guests: 1
+      maxGuests: 4
     };
     return _this;
   }
@@ -1091,18 +1091,16 @@ var App = function (_React$Component) {
   }, {
     key: "handleNumberOfGuests",
     value: function handleNumberOfGuests(numberOfGuests) {
-      if (!numberOfGuests) {
-        return "Enter the number of guests that will be dining";
-      }
       this.setState(function () {
         return {
-          guests: numberOfGuests
+          maxGuests: numberOfGuests
         };
       });
     }
   }, {
     key: "render",
     value: function render() {
+      var isMaxNumberOfGuestsReached = this.state.options.length === this.state.maxGuests;
       return _react2.default.createElement(
         "div",
         null,
@@ -1110,14 +1108,24 @@ var App = function (_React$Component) {
           title: "Random Restaurant",
           subtitle: "Where will your next meal be?"
         }),
-        _react2.default.createElement(SettingsForm, { handleNumberOfGuests: this.handleNumberOfGuests }),
-        _react2.default.createElement(AddRestaurant, { handleAddRestaurant: this.handleAddRestaurant }),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Maximum number of guests: ",
+          this.state.maxGuests
+        ),
+        _react2.default.createElement(SettingsForm, {
+          handleNumberOfGuests: this.handleNumberOfGuests,
+          maxGuests: this.state.maxGuests,
+          currentGuestCount: this.state.options.length
+        }),
         _react2.default.createElement(Options, {
           options: this.state.options,
+          handleAddRestaurant: this.handleAddRestaurant,
           handleDeleteOptions: this.handleDeleteOptions
         }),
-        _react2.default.createElement(Action, {
-          checkOptions: this.state.options.length == this.state.guests,
+        _react2.default.createElement(RandomRestaurantPicker, {
+          enablePickARestaurant: isMaxNumberOfGuestsReached,
           handleRandomPick: this.handleRandomPick
         })
       );
@@ -1140,7 +1148,7 @@ var Header = function (_React$Component2) {
     key: "render",
     value: function render() {
       return _react2.default.createElement(
-        "div",
+        "header",
         null,
         _react2.default.createElement(
           "h1",
@@ -1182,7 +1190,7 @@ var SettingsForm = function (_React$Component3) {
 
     _this3.handleNumberOfGuests = _this3.handleNumberOfGuests.bind(_this3);
     _this3.state = {
-      error: undefined
+      error: ""
     };
     return _this3;
   }
@@ -1191,8 +1199,17 @@ var SettingsForm = function (_React$Component3) {
     key: "handleNumberOfGuests",
     value: function handleNumberOfGuests(event) {
       event.preventDefault();
-      var numberOfGuests = event.target.elements.guests.value;
-      var error = this.props.handleNumberOfGuests(numberOfGuests);
+      var numberOfGuests = Number.parseInt(event.target.elements.guests.value, 10);
+      var error = "";
+      if (Number.isNaN(numberOfGuests)) {
+        error = "Enter the number of guests that will be dining";
+      } else if (numberOfGuests <= 0) {
+        error = "The number of guests has to be positive.";
+      } else if (numberOfGuests < this.props.currentGuestCount) {
+        error = "Invalid settings. More people have signed up than the maximum.";
+      } else {
+        this.props.handleNumberOfGuests(numberOfGuests);
+      }
 
       this.setState(function () {
         return { error: error };
@@ -1242,16 +1259,16 @@ var SettingsForm = function (_React$Component3) {
   return SettingsForm;
 }(_react2.default.Component);
 
-var Action = function (_React$Component4) {
-  _inherits(Action, _React$Component4);
+var RandomRestaurantPicker = function (_React$Component4) {
+  _inherits(RandomRestaurantPicker, _React$Component4);
 
-  function Action() {
-    _classCallCheck(this, Action);
+  function RandomRestaurantPicker() {
+    _classCallCheck(this, RandomRestaurantPicker);
 
-    return _possibleConstructorReturn(this, (Action.__proto__ || Object.getPrototypeOf(Action)).apply(this, arguments));
+    return _possibleConstructorReturn(this, (RandomRestaurantPicker.__proto__ || Object.getPrototypeOf(RandomRestaurantPicker)).apply(this, arguments));
   }
 
-  _createClass(Action, [{
+  _createClass(RandomRestaurantPicker, [{
     key: "render",
     value: function render() {
       return _react2.default.createElement(
@@ -1261,7 +1278,7 @@ var Action = function (_React$Component4) {
           "button",
           {
             onClick: this.props.handleRandomPick,
-            disabled: !this.props.checkOptions
+            disabled: !this.props.enablePickARestaurant
           },
           "Pick A Restaurant"
         )
@@ -1269,7 +1286,7 @@ var Action = function (_React$Component4) {
     }
   }]);
 
-  return Action;
+  return RandomRestaurantPicker;
 }(_react2.default.Component);
 
 var Options = function (_React$Component5) {
@@ -1287,11 +1304,15 @@ var Options = function (_React$Component5) {
       return _react2.default.createElement(
         "div",
         null,
+        _react2.default.createElement(AddRestaurant, {
+          handleAddRestaurant: this.props.handleAddRestaurant,
+          guestCount: this.props.options.length
+        }),
         this.props.options.map(function (option) {
           return _react2.default.createElement(
             "p",
             { key: option },
-            _react2.default.createElement(Option, { key: option, optionText: option })
+            option
           );
         }),
         _react2.default.createElement(
@@ -1306,40 +1327,19 @@ var Options = function (_React$Component5) {
   return Options;
 }(_react2.default.Component);
 
-var Option = function (_React$Component6) {
-  _inherits(Option, _React$Component6);
-
-  function Option() {
-    _classCallCheck(this, Option);
-
-    return _possibleConstructorReturn(this, (Option.__proto__ || Object.getPrototypeOf(Option)).apply(this, arguments));
-  }
-
-  _createClass(Option, [{
-    key: "render",
-    value: function render() {
-      return this.props.optionText;
-    }
-  }]);
-
-  return Option;
-}(_react2.default.Component);
-
-var AddRestaurant = function (_React$Component7) {
-  _inherits(AddRestaurant, _React$Component7);
+var AddRestaurant = function (_React$Component6) {
+  _inherits(AddRestaurant, _React$Component6);
 
   function AddRestaurant(props) {
     _classCallCheck(this, AddRestaurant);
 
-    var _this7 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
+    var _this6 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
 
-    _this7.handleAddRestaurant = _this7.handleAddRestaurant.bind(_this7);
-    _this7.handleCount = _this7.handleCount.bind(_this7);
-    _this7.state = {
-      error: undefined,
-      count: 1
+    _this6.handleAddRestaurant = _this6.handleAddRestaurant.bind(_this6);
+    _this6.state = {
+      error: ""
     };
-    return _this7;
+    return _this6;
   }
 
   _createClass(AddRestaurant, [{
@@ -1352,15 +1352,6 @@ var AddRestaurant = function (_React$Component7) {
         return { error: error };
       });
       e.target.elements.restaurant.value = "";
-    }
-  }, {
-    key: "handleCount",
-    value: function handleCount() {
-      var _this8 = this;
-
-      this.setState(function () {
-        return { count: _this8.state.count + 1 };
-      });
     }
   }, {
     key: "render",
@@ -1380,12 +1371,12 @@ var AddRestaurant = function (_React$Component7) {
             "label",
             null,
             "Guest: ",
-            this.state.count
+            this.props.guestCount
           ),
           _react2.default.createElement("input", { type: "text", name: "restaurant" }),
           _react2.default.createElement(
             "button",
-            { onClick: this.handleCount },
+            null,
             "Add"
           )
         )
