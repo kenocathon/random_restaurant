@@ -1017,8 +1017,6 @@ if (process.env.NODE_ENV === 'production') {
 "use strict";
 
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 var _react = __webpack_require__(5);
 
 var _react2 = _interopRequireDefault(_react);
@@ -1027,367 +1025,13 @@ var _reactDom = __webpack_require__(19);
 
 var _reactDom2 = _interopRequireDefault(_reactDom);
 
+var _App = __webpack_require__(42);
+
+var _App2 = _interopRequireDefault(_App);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-//import "./index.css";
-//import App from "./components/App";
-
-var App = function (_React$Component) {
-  _inherits(App, _React$Component);
-
-  function App(props) {
-    _classCallCheck(this, App);
-
-    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
-
-    _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
-    _this.handleRandomPick = _this.handleRandomPick.bind(_this);
-    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
-    _this.handleNumberOfGuests = _this.handleNumberOfGuests.bind(_this);
-    _this.state = {
-      options: [],
-      maxGuests: 4
-    };
-    return _this;
-  }
-
-  _createClass(App, [{
-    key: "handleDeleteOptions",
-    value: function handleDeleteOptions() {
-      this.setState(function () {
-        return {
-          options: []
-        };
-      });
-    }
-  }, {
-    key: "handleRandomPick",
-    value: function handleRandomPick() {
-      var randomNum = Math.floor(Math.random() * this.state.options.length);
-      var option = this.state.options[randomNum];
-      alert("You must go to " + option);
-    }
-  }, {
-    key: "handleAddRestaurant",
-    value: function handleAddRestaurant(newRestaurant) {
-      if (!newRestaurant) {
-        return "Enter valid value to add a restaurant";
-      } else if (this.state.options.indexOf(newRestaurant) > -1) {
-        return "This restaurant already exists in the list";
-      }
-
-      this.setState(function (prevState) {
-        return {
-          options: prevState.options.concat(newRestaurant)
-        };
-      });
-    }
-  }, {
-    key: "handleNumberOfGuests",
-    value: function handleNumberOfGuests(numberOfGuests) {
-      this.setState(function () {
-        return {
-          maxGuests: numberOfGuests
-        };
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var isMaxNumberOfGuestsReached = this.state.options.length === this.state.maxGuests;
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(Header, {
-          title: "Random Restaurant",
-          subtitle: "Where will your next meal be?"
-        }),
-        _react2.default.createElement(
-          "p",
-          null,
-          "Maximum number of guests: ",
-          this.state.maxGuests
-        ),
-        _react2.default.createElement(SettingsForm, {
-          handleNumberOfGuests: this.handleNumberOfGuests,
-          maxGuests: this.state.maxGuests,
-          currentGuestCount: this.state.options.length
-        }),
-        _react2.default.createElement(Options, {
-          options: this.state.options,
-          handleAddRestaurant: this.handleAddRestaurant,
-          handleDeleteOptions: this.handleDeleteOptions
-        }),
-        _react2.default.createElement(RandomRestaurantPicker, {
-          enablePickARestaurant: isMaxNumberOfGuestsReached,
-          handleRandomPick: this.handleRandomPick
-        })
-      );
-    }
-  }]);
-
-  return App;
-}(_react2.default.Component);
-
-var Header = function (_React$Component2) {
-  _inherits(Header, _React$Component2);
-
-  function Header() {
-    _classCallCheck(this, Header);
-
-    return _possibleConstructorReturn(this, (Header.__proto__ || Object.getPrototypeOf(Header)).apply(this, arguments));
-  }
-
-  _createClass(Header, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "header",
-        null,
-        _react2.default.createElement(
-          "h1",
-          null,
-          this.props.title
-        ),
-        _react2.default.createElement(
-          "h2",
-          null,
-          this.props.subtitle
-        ),
-        _react2.default.createElement(Hamburger, null)
-      );
-    }
-  }]);
-
-  return Header;
-}(_react2.default.Component);
-
-var Hamburger = function Hamburger() {
-  return _react2.default.createElement(
-    "div",
-    null,
-    _react2.default.createElement(
-      "p",
-      null,
-      "Three lines here"
-    )
-  );
-};
-
-var SettingsForm = function (_React$Component3) {
-  _inherits(SettingsForm, _React$Component3);
-
-  function SettingsForm(props) {
-    _classCallCheck(this, SettingsForm);
-
-    var _this3 = _possibleConstructorReturn(this, (SettingsForm.__proto__ || Object.getPrototypeOf(SettingsForm)).call(this, props));
-
-    _this3.handleNumberOfGuests = _this3.handleNumberOfGuests.bind(_this3);
-    _this3.state = {
-      error: ""
-    };
-    return _this3;
-  }
-
-  _createClass(SettingsForm, [{
-    key: "handleNumberOfGuests",
-    value: function handleNumberOfGuests(event) {
-      event.preventDefault();
-      var numberOfGuests = Number.parseInt(event.target.elements.guests.value, 10);
-      var error = "";
-      if (Number.isNaN(numberOfGuests)) {
-        error = "Enter the number of guests that will be dining";
-      } else if (numberOfGuests <= 0) {
-        error = "The number of guests has to be positive.";
-      } else if (numberOfGuests < this.props.currentGuestCount) {
-        error = "Invalid settings. More people have signed up than the maximum.";
-      } else {
-        this.props.handleNumberOfGuests(numberOfGuests);
-      }
-
-      this.setState(function () {
-        return { error: error };
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "form",
-        { onSubmit: this.handleNumberOfGuests },
-        _react2.default.createElement(
-          "fieldset",
-          null,
-          this.state.error && _react2.default.createElement(
-            "p",
-            null,
-            this.state.error
-          ),
-          _react2.default.createElement(
-            "legend",
-            null,
-            "Settings"
-          ),
-          _react2.default.createElement(
-            "label",
-            null,
-            "Number of guests"
-          ),
-          _react2.default.createElement("input", { type: "number", name: "guests" }),
-          _react2.default.createElement("input", { type: "checkbox", name: "randomCheck" }),
-          _react2.default.createElement(
-            "label",
-            null,
-            "Add a local restaurant to the list"
-          ),
-          _react2.default.createElement(
-            "button",
-            null,
-            "Submit"
-          )
-        )
-      );
-    }
-  }]);
-
-  return SettingsForm;
-}(_react2.default.Component);
-
-var RandomRestaurantPicker = function (_React$Component4) {
-  _inherits(RandomRestaurantPicker, _React$Component4);
-
-  function RandomRestaurantPicker() {
-    _classCallCheck(this, RandomRestaurantPicker);
-
-    return _possibleConstructorReturn(this, (RandomRestaurantPicker.__proto__ || Object.getPrototypeOf(RandomRestaurantPicker)).apply(this, arguments));
-  }
-
-  _createClass(RandomRestaurantPicker, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(
-          "button",
-          {
-            onClick: this.props.handleRandomPick,
-            disabled: !this.props.enablePickARestaurant
-          },
-          "Pick A Restaurant"
-        )
-      );
-    }
-  }]);
-
-  return RandomRestaurantPicker;
-}(_react2.default.Component);
-
-var Options = function (_React$Component5) {
-  _inherits(Options, _React$Component5);
-
-  function Options() {
-    _classCallCheck(this, Options);
-
-    return _possibleConstructorReturn(this, (Options.__proto__ || Object.getPrototypeOf(Options)).apply(this, arguments));
-  }
-
-  _createClass(Options, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "div",
-        null,
-        _react2.default.createElement(AddRestaurant, {
-          handleAddRestaurant: this.props.handleAddRestaurant,
-          guestCount: this.props.options.length
-        }),
-        this.props.options.map(function (option) {
-          return _react2.default.createElement(
-            "p",
-            { key: option },
-            option
-          );
-        }),
-        _react2.default.createElement(
-          "button",
-          { onClick: this.props.handleDeleteOptions },
-          "Clear All"
-        )
-      );
-    }
-  }]);
-
-  return Options;
-}(_react2.default.Component);
-
-var AddRestaurant = function (_React$Component6) {
-  _inherits(AddRestaurant, _React$Component6);
-
-  function AddRestaurant(props) {
-    _classCallCheck(this, AddRestaurant);
-
-    var _this6 = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
-
-    _this6.handleAddRestaurant = _this6.handleAddRestaurant.bind(_this6);
-    _this6.state = {
-      error: ""
-    };
-    return _this6;
-  }
-
-  _createClass(AddRestaurant, [{
-    key: "handleAddRestaurant",
-    value: function handleAddRestaurant(e) {
-      e.preventDefault();
-      var newRestaurant = e.target.elements.restaurant.value.trim();
-      var error = this.props.handleAddRestaurant(newRestaurant);
-      this.setState(function () {
-        return { error: error };
-      });
-      e.target.elements.restaurant.value = "";
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "div",
-        null,
-        this.state.error && _react2.default.createElement(
-          "p",
-          null,
-          this.state.error
-        ),
-        _react2.default.createElement(
-          "form",
-          { onSubmit: this.handleAddRestaurant },
-          _react2.default.createElement(
-            "label",
-            null,
-            "Guest: ",
-            this.props.guestCount
-          ),
-          _react2.default.createElement("input", { type: "text", name: "restaurant" }),
-          _react2.default.createElement(
-            "button",
-            null,
-            "Add"
-          )
-        )
-      );
-    }
-  }]);
-
-  return AddRestaurant;
-}(_react2.default.Component);
-
-_reactDom2.default.render(_react2.default.createElement(App, null), document.getElementById("root"));
+_reactDom2.default.render(_react2.default.createElement(_App2.default, null), document.getElementById("root"));
 
 /***/ }),
 /* 17 */
@@ -21844,6 +21488,532 @@ module.exports = function() {
   return ReactPropTypes;
 };
 
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Header = function Header(props) {
+  return _react2.default.createElement(
+    "header",
+    null,
+    _react2.default.createElement(
+      "h1",
+      null,
+      props.title
+    ),
+    _react2.default.createElement(
+      "h2",
+      null,
+      props.subtitle
+    ),
+    _react2.default.createElement(Hamburger, null)
+  );
+};
+
+var Hamburger = function Hamburger() {
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(
+      "p",
+      null,
+      "Three lines here"
+    )
+  );
+};
+
+exports.default = Header;
+
+/***/ }),
+/* 36 */,
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var RandomRestaurantPicker = function RandomRestaurantPicker(props) {
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(
+      "button",
+      {
+        onClick: props.handleRandomPick,
+        disabled: !props.enablePickARestaurant
+      },
+      "Pick A Restaurant"
+    )
+  );
+};
+
+exports.default = RandomRestaurantPicker;
+
+/***/ }),
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _AddRestaurant = __webpack_require__(39);
+
+var _AddRestaurant2 = _interopRequireDefault(_AddRestaurant);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var Options = function Options(props) {
+  return _react2.default.createElement(
+    "div",
+    null,
+    _react2.default.createElement(_AddRestaurant2.default, {
+      handleAddRestaurant: props.handleAddRestaurant,
+      guestCount: props.options.length
+    }),
+    props.options.map(function (option) {
+      return _react2.default.createElement(
+        "p",
+        { key: option },
+        option
+      );
+    }),
+    _react2.default.createElement(
+      "button",
+      { onClick: props.handleDeleteOptions },
+      "Clear All"
+    )
+  );
+};
+
+exports.default = Options;
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var AddRestaurant = function (_React$Component) {
+  _inherits(AddRestaurant, _React$Component);
+
+  function AddRestaurant(props) {
+    _classCallCheck(this, AddRestaurant);
+
+    var _this = _possibleConstructorReturn(this, (AddRestaurant.__proto__ || Object.getPrototypeOf(AddRestaurant)).call(this, props));
+
+    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
+    _this.state = {
+      error: ""
+    };
+    return _this;
+  }
+
+  _createClass(AddRestaurant, [{
+    key: "handleAddRestaurant",
+    value: function handleAddRestaurant(e) {
+      e.preventDefault();
+      var newRestaurant = e.target.elements.restaurant.value.trim();
+      var error = this.props.handleAddRestaurant(newRestaurant);
+      this.setState(function () {
+        return { error: error };
+      });
+      e.target.elements.restaurant.value = "";
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "div",
+        null,
+        this.state.error && _react2.default.createElement(
+          "p",
+          null,
+          this.state.error
+        ),
+        _react2.default.createElement(
+          "form",
+          { onSubmit: this.handleAddRestaurant },
+          _react2.default.createElement(
+            "label",
+            null,
+            "Guest: ",
+            this.props.guestCount
+          ),
+          _react2.default.createElement("input", { type: "text", name: "restaurant" }),
+          _react2.default.createElement(
+            "button",
+            null,
+            "Add"
+          )
+        )
+      );
+    }
+  }]);
+
+  return AddRestaurant;
+}(_react2.default.Component);
+
+exports.default = AddRestaurant;
+
+/***/ }),
+/* 40 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _ProfileForm = __webpack_require__(41);
+
+var _ProfileForm2 = _interopRequireDefault(_ProfileForm);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Form = function (_React$Component) {
+  _inherits(Form, _React$Component);
+
+  function Form(props) {
+    _classCallCheck(this, Form);
+
+    var _this = _possibleConstructorReturn(this, (Form.__proto__ || Object.getPrototypeOf(Form)).call(this, props));
+
+    _this.handleNumberOfGuests = _this.handleNumberOfGuests.bind(_this);
+    _this.state = {
+      error: ""
+    };
+    return _this;
+  }
+
+  _createClass(Form, [{
+    key: "handleNumberOfGuests",
+    value: function handleNumberOfGuests(event) {
+      event.preventDefault();
+      var numberOfGuests = Number.parseInt(event.target.elements.guests.value, 10);
+      var error = "";
+      if (Number.isNaN(numberOfGuests)) {
+        error = "Enter the number of guests that will be dining";
+      } else if (numberOfGuests <= 0) {
+        error = "The number of guests has to be positive.";
+      } else if (numberOfGuests < this.props.currentGuestCount) {
+        error = "Invalid settings. More people have signed up than the maximum.";
+      } else {
+        this.props.handleNumberOfGuests(numberOfGuests);
+      }
+
+      this.setState(function () {
+        return { error: error };
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return _react2.default.createElement(
+        "form",
+        { onSubmit: this.handleNumberOfGuests },
+        _react2.default.createElement(_ProfileForm2.default, null),
+        _react2.default.createElement(
+          "fieldset",
+          null,
+          this.state.error && _react2.default.createElement(
+            "p",
+            null,
+            this.state.error
+          ),
+          _react2.default.createElement(
+            "legend",
+            null,
+            "Settings"
+          ),
+          _react2.default.createElement(
+            "label",
+            null,
+            "Number of guests"
+          ),
+          _react2.default.createElement("input", { type: "number", name: "guests" }),
+          _react2.default.createElement("input", { type: "checkbox", name: "randomCheck" }),
+          _react2.default.createElement(
+            "label",
+            null,
+            "Add a local restaurant to the list"
+          ),
+          _react2.default.createElement(
+            "button",
+            null,
+            "Submit"
+          )
+        )
+      );
+    }
+  }]);
+
+  return Form;
+}(_react2.default.Component);
+
+exports.default = Form;
+
+/***/ }),
+/* 41 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var ProfileForm = function ProfileForm(props) {
+  return _react2.default.createElement(
+    "fieldset",
+    null,
+    _react2.default.createElement(
+      "legend",
+      null,
+      "Profile"
+    ),
+    _react2.default.createElement(
+      "label",
+      { htmlFor: "fname" },
+      "First Name"
+    ),
+    _react2.default.createElement("input", { type: "text", name: "fname" }),
+    _react2.default.createElement(
+      "label",
+      { htmlFor: "lname" },
+      "Last Name"
+    ),
+    _react2.default.createElement("input", { type: "text", name: "lname" }),
+    _react2.default.createElement(
+      "label",
+      { htmlFor: "mail" },
+      "Email Address"
+    ),
+    _react2.default.createElement("input", { type: "email", name: "mail" }),
+    _react2.default.createElement(
+      "label",
+      { htmlFor: "favRestaurant" },
+      "Favorite Restaurant"
+    ),
+    _react2.default.createElement("input", { type: "text", name: "favRestaurant" })
+  );
+};
+
+exports.default = ProfileForm;
+
+/***/ }),
+/* 42 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = __webpack_require__(5);
+
+var _react2 = _interopRequireDefault(_react);
+
+var _Header = __webpack_require__(35);
+
+var _Header2 = _interopRequireDefault(_Header);
+
+var _Form = __webpack_require__(40);
+
+var _Form2 = _interopRequireDefault(_Form);
+
+var _RandomRestaurant = __webpack_require__(37);
+
+var _RandomRestaurant2 = _interopRequireDefault(_RandomRestaurant);
+
+var _Options = __webpack_require__(38);
+
+var _Options2 = _interopRequireDefault(_Options);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+//import "./index.css";
+//import App from "./components/App";
+
+var App = function (_React$Component) {
+  _inherits(App, _React$Component);
+
+  function App(props) {
+    _classCallCheck(this, App);
+
+    var _this = _possibleConstructorReturn(this, (App.__proto__ || Object.getPrototypeOf(App)).call(this, props));
+
+    _this.handleDeleteOptions = _this.handleDeleteOptions.bind(_this);
+    _this.handleRandomPick = _this.handleRandomPick.bind(_this);
+    _this.handleAddRestaurant = _this.handleAddRestaurant.bind(_this);
+    _this.handleNumberOfGuests = _this.handleNumberOfGuests.bind(_this);
+    _this.state = {
+      options: [],
+      maxGuests: 4
+    };
+    return _this;
+  }
+
+  _createClass(App, [{
+    key: "handleDeleteOptions",
+    value: function handleDeleteOptions() {
+      this.setState(function () {
+        return {
+          options: []
+        };
+      });
+    }
+  }, {
+    key: "handleRandomPick",
+    value: function handleRandomPick() {
+      var randomNum = Math.floor(Math.random() * this.state.options.length);
+      var option = this.state.options[randomNum];
+      alert("You must go to " + option);
+    }
+  }, {
+    key: "handleAddRestaurant",
+    value: function handleAddRestaurant(newRestaurant) {
+      if (!newRestaurant) {
+        return "Enter valid value to add a restaurant";
+      } else if (this.state.options.indexOf(newRestaurant) > -1) {
+        return "This restaurant already exists in the list";
+      }
+
+      this.setState(function (prevState) {
+        return {
+          options: prevState.options.concat(newRestaurant)
+        };
+      });
+    }
+  }, {
+    key: "handleNumberOfGuests",
+    value: function handleNumberOfGuests(numberOfGuests) {
+      this.setState(function () {
+        return {
+          maxGuests: numberOfGuests
+        };
+      });
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      var isMaxNumberOfGuestsReached = this.state.options.length === this.state.maxGuests;
+      return _react2.default.createElement(
+        "div",
+        null,
+        _react2.default.createElement(_Header2.default, {
+          title: "Random Restaurant",
+          subtitle: "Where will your next meal be?"
+        }),
+        _react2.default.createElement(
+          "p",
+          null,
+          "Maximum number of guests: ",
+          this.state.maxGuests
+        ),
+        _react2.default.createElement(_Form2.default, {
+          handleNumberOfGuests: this.handleNumberOfGuests,
+          maxGuests: this.state.maxGuests,
+          currentGuestCount: this.state.options.length
+        }),
+        _react2.default.createElement(_Options2.default, {
+          options: this.state.options,
+          handleAddRestaurant: this.handleAddRestaurant,
+          handleDeleteOptions: this.handleDeleteOptions
+        }),
+        _react2.default.createElement(_RandomRestaurant2.default, {
+          enablePickARestaurant: isMaxNumberOfGuestsReached,
+          handleRandomPick: this.handleRandomPick
+        })
+      );
+    }
+  }]);
+
+  return App;
+}(_react2.default.Component);
+
+exports.default = App;
 
 /***/ })
 /******/ ]);
