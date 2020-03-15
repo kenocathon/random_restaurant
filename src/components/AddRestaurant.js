@@ -1,5 +1,6 @@
 import React from "react";
 
+//exported to Options.js
 export default class AddRestaurant extends React.Component {
   constructor(props) {
     super(props);
@@ -12,9 +13,7 @@ export default class AddRestaurant extends React.Component {
     e.preventDefault();
     const newRestaurant = e.target.elements.restaurant.value.trim();
     const error = this.props.handleAddRestaurant(newRestaurant);
-    this.setState(() => {
-      return { error };
-    });
+    this.setState(() => ({ error }));
     e.target.elements.restaurant.value = "";
   }
 
