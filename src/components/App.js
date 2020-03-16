@@ -10,44 +10,38 @@ import ProfileForm from "./ProfileForm";
 //import App from "./components/App";
 
 export default class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleDeleteOptions = this.handleDeleteOptions.bind(this);
-    this.handleRandomPick = this.handleRandomPick.bind(this);
-    this.handleAddRestaurant = this.handleAddRestaurant.bind(this);
-    this.handleSubmitForm = this.handleSubmitForm.bind(this);
-    this.handleSelectedOption = this.handleSelectedOption.bind(this);
-    this.handleSaveProfile = this.handleSaveProfile.bind(this);
-    this.AddToOptions1 = this.AddToOptions1.bind(this);
-    this.AddToOptions2 = this.AddToOptions2.bind(this);
-
-    this.state = {
-      options: [],
-      maxGuests: 0,
-      selectedOption: "", //boolean for modal rendering. If empty string will be false.
-      favRestaurant: ""
-    };
-  }
+  state = {
+    options: [],
+    maxGuests: 0,
+    selectedOption: "", //boolean for modal rendering. If empty string will be false.
+    favRestaurant: "",
+    visible: {
+      profile: true,
+      settings: false,
+      app: false,
+      button: false
+    }
+  };
 
   // Handles Clear button to remove all options from rendering. Sets state to empty
-  handleDeleteOptions() {
+  handleDeleteOptions = () => {
     this.setState(() => ({ options: [] }));
-  }
+  };
 
   // Handles Pick A Restaurant button and picks random restaurant. Sets state to option and shows on modal
-  handleRandomPick() {
+  handleRandomPick = () => {
     const randomNum = Math.floor(Math.random() * this.state.options.length);
     const option = this.state.options[randomNum];
     this.setState(() => ({ selectedOption: option }));
-  }
+  };
 
   // Handles selectedOption state and sets to empty when Okay button is clicked.
-  handleSelectedOption() {
+  handleSelectedOption = () => {
     this.setState(() => ({ selectedOption: "" }));
-  }
+  };
 
   // handles error for AddRestaurant Component and sets state to new array of options.
-  handleAddRestaurant(newRestaurant) {
+  handleAddRestaurant = newRestaurant => {
     if (!newRestaurant) {
       return "Enter valid value to add a restaurant";
     } else if (this.state.options.indexOf(newRestaurant) > -1) {
@@ -57,18 +51,31 @@ export default class App extends React.Component {
     this.setState(prevState => ({
       options: prevState.options.concat(newRestaurant)
     }));
-  }
+  };
 
   // Sets state of maxGuests for validation of Pick A Restaurant button.
-  handleSubmitForm(numberOfGuests) {
-    this.setState(() => ({ maxGuests: numberOfGuests }));
-  }
+  handleSubmitForm = numberOfGuests => {
+    this.setState(() => ({
+      maxGuests: numberOfGuests,
+      visible: {
+        settings: false,
+        app: true,
+        button: true
+      }
+    }));
+  };
 
-  handleSaveProfile(favRestaurant) {
-    this.setState(() => ({ favRestaurant }));
-  }
+  handleSaveProfile = favRestaurant => {
+    this.setState(() => ({
+      favRestaurant,
+      visible: {
+        profile: false,
+        settings: true
+      }
+    }));
+  };
 
-  AddToOptions1(isChecked) {
+  AddToOptions1 = isChecked => {
     if (isChecked) {
       const restaurantList = [
         "Olive Garden",
@@ -85,14 +92,14 @@ export default class App extends React.Component {
         options: prevState.options.concat(localRestaurant)
       }));
     }
-  }
-  AddToOptions2(isChecked) {
+  };
+  AddToOptions2 = isChecked => {
     if (isChecked) {
       this.setState(prevState => ({
         options: prevState.options.concat(this.state.favRestaurant)
       }));
     }
-  }
+  };
 
   render() {
     const isMaxNumberOfGuestsReached =
@@ -104,27 +111,30 @@ export default class App extends React.Component {
           subtitle="Where will your next meal be?"
         />
 
-        <p>Maximum number of guests: {this.state.maxGuests}</p>
+        <div className="container">
+          <ProfileForm
+            handleSaveProfile={this.handleSaveProfile}
+            visible={this.state.visible.profile}
+          />
 
-        <ProfileForm handleSaveProfile={this.handleSaveProfile} />
+          <SettingsForm
+            handleSubmitForm={this.handleSubmitForm}
+            AddToOptions1={this.AddToOptions1}
+            AddToOptions2={this.AddToOptions2}
+            maxGuests={this.state.maxGuests}
+            currentGuestCount={this.state.options.length}
+            favRestaurant={this.state.favRestaurant}
+            checked={this.state.checked}
+            visible={this.state.visible.settings}
+          />
+        </div>
 
-        <SettingsForm
-          handleSubmitForm={this.handleSubmitForm}
-          AddToOptions1={this.AddToOptions1}
-          AddToOptions2={this.AddToOptions2}
-          maxGuests={this.state.maxGuests}
-          currentGuestCount={this.state.options.length}
-          favRestaurant={this.state.favRestaurant}
-          checked={this.state.checked}
-        />
-
-        <Options
+        <RandomRestaurantPicker
           options={this.state.options}
           handleAddRestaurant={this.handleAddRestaurant}
           handleDeleteOptions={this.handleDeleteOptions}
-        />
-
-        <RandomRestaurantPicker
+          maxGuests={this.state.maxGuests}
+          visible={this.state.visible.app}
           enablePickARestaurant={isMaxNumberOfGuestsReached}
           handleRandomPick={this.handleRandomPick}
         />

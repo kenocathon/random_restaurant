@@ -1,16 +1,12 @@
 import React from "react";
 export default class SettingsForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSubmitForm = this.handleSubmitForm.bind(this);
-    this.state = {
-      error: "",
-      checked1: false, // Add local restaurant checkbox
-      checked2: false // Add favorite restaurant checkbox
-    };
-  }
+  state = {
+    error: "",
+    checked1: false, // Add local restaurant checkbox
+    checked2: false // Add favorite restaurant checkbox
+  };
 
-  handleSubmitForm(event) {
+  handleSubmitForm = event => {
     event.preventDefault();
     const numberOfGuests = Number.parseInt(
       event.target.elements.guests.value,
@@ -31,58 +27,65 @@ export default class SettingsForm extends React.Component {
     this.props.AddToOptions2(this.state.checked2); // Calls function in App to add fav restaurant to options [].
 
     this.setState(() => ({ error })); //If nothing is returned it will remain empty.
-  }
-  handleChangeCheckbox1(event) {
+  };
+  handleChangeCheckbox1 = event => {
     const checked = event.target.checked; // clicked action
     this.setState({ checked1: checked });
-  }
-  handleChangeCheckbox2(event) {
+  };
+  handleChangeCheckbox2 = event => {
     const checked = event.target.checked; // clicked action
     this.setState({ checked2: checked });
-  }
+  };
 
   render() {
     return (
-      <form onSubmit={this.handleSubmitForm}>
+      <form
+        style={this.props.visible ? { display: "block" } : { display: "none" }}
+        onSubmit={this.handleSubmitForm}
+      >
         <fieldset>
           {this.state.error && <p>{this.state.error}</p>}
           <legend>Settings</legend>
-
-          <label htmlFor="guests">Number of guests</label>
-          <input type="number" name="guests" />
-
-          <input
-            type="checkbox"
-            name="randomCheck"
-            checked={this.state.checked1}
-            onChange={e => this.handleChangeCheckbox1(event)}
-          />
-          <label htmlFor="randomCheck">
-            Add a local restaurant to the list
-          </label>
-
-          <input
-            type="checkbox"
-            name="favRestaurant"
-            checked={this.state.checked2}
-            onChange={e => this.handleChangeCheckbox2(event)}
-            style={
-              this.props.favRestaurant
-                ? { display: "block" }
-                : { display: "none" }
-            }
-          />
-          <label
-            style={
-              this.props.favRestaurant
-                ? { display: "block" }
-                : { display: "none" }
-            }
-          >
-            Use your favorite restaurant as your choice
-          </label>
-
-          <button>Submit</button>
+          <div className="formbox">
+            <label htmlFor="guests">Number of guests</label>
+            <input type="number" name="guests" />
+          </div>
+          <div className="formboxcheck">
+            <input
+              type="checkbox"
+              name="randomCheck"
+              checked={this.state.checked1}
+              onChange={e => this.handleChangeCheckbox1(event)}
+            />
+            <label htmlFor="randomCheck">
+              Add a local restaurant to the list
+            </label>
+          </div>
+          <div className="formboxcheck">
+            <input
+              type="checkbox"
+              name="favRestaurant"
+              checked={this.state.checked2}
+              onChange={e => this.handleChangeCheckbox2(event)}
+              style={
+                this.props.favRestaurant
+                  ? { display: "block" }
+                  : { display: "none" }
+              }
+            />
+            <label
+              style={
+                this.props.favRestaurant
+                  ? { display: "block" }
+                  : { display: "none" }
+              }
+            >
+              Use your favorite restaurant as your choice
+            </label>
+          </div>
+          <div className="formbox">
+            <button>Submit</button>
+          </div>
         </fieldset>
       </form>
     );

@@ -1,13 +1,7 @@
 import React from "react";
-import Form from "./SettingsForm";
 
 export default class ProfileForm extends React.Component {
-  constructor(props) {
-    super(props);
-    this.handleSaveProfile = this.handleSaveProfile.bind(this);
-  }
-
-  handleSaveProfile(event) {
+  handleSaveProfile = event => {
     event.preventDefault();
     const favRestaurant = event.target.elements.favRestaurant.value.trim();
     this.props.handleSaveProfile(favRestaurant);
@@ -15,31 +9,44 @@ export default class ProfileForm extends React.Component {
     event.target.elements.lname.value = "";
     event.target.elements.mail.value = "";
     event.target.elements.favRestaurant.value = "";
-  }
+  };
 
   render() {
     return (
-      <form onSubmit={this.handleSaveProfile}>
+      <form
+        style={this.props.visible ? { display: "block" } : { display: "none" }}
+        onSubmit={this.handleSaveProfile}
+      >
         <fieldset>
           <legend>Profile</legend>
 
-          <label htmlFor="fname">First Name</label>
-          <input type="text" name="fname" required="required" />
+          <div className="formbox">
+            <label htmlFor="fname">First Name</label>
+            <input type="text" name="fname" required="required" />
+          </div>
 
-          <label htmlFor="lname" required="required">
-            Last Name
-          </label>
-          <input type="text" name="lname" />
+          <div className="formbox">
+            <label htmlFor="lname" required="required">
+              Last Name
+            </label>
+            <input type="text" name="lname" />
+          </div>
 
-          <label htmlFor="mail" required="required">
-            Email Address
-          </label>
-          <input type="email" name="mail" />
+          <div className="formbox">
+            <label htmlFor="mail" required="required">
+              Email Address
+            </label>
+            <input type="email" name="mail" />
+          </div>
 
-          <label htmlFor="favRestaurant">Favorite Restaurant</label>
-          <input type="text" name="favRestaurant" />
+          <div className="formbox">
+            <label htmlFor="favRestaurant">Favorite Restaurant</label>
+            <input type="text" name="favRestaurant" />
+          </div>
 
-          <button>Save</button>
+          <div className="formbox">
+            <button>Save</button>
+          </div>
         </fieldset>
       </form>
     );

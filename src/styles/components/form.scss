@@ -1,0 +1,46 @@
+.formbox {
+  padding: 0.5rem 0;
+  @include flexbox-display;
+  flex-direction: column;
+  width: 90%;
+  margin: 0 auto;
+  color: $off-white;
+  input {
+    padding: 0.5rem;
+    border: 1px solid $secondary-color;
+    border-radius: 0.5rem;
+    background-color: $secondary-color;
+    color: $off-white;
+  }
+  button {
+    margin-top: 1.5rem;
+    padding: 1rem 0;
+    background-color: darken($off-white, 20%);
+    border: 1px solid;
+    border-radius: 0.2rem;
+    cursor: pointer;
+  }
+}
+.formboxcheck {
+  padding: 0.5rem 0;
+  @include flexbox-display;
+  width: 90%;
+  margin: 0 auto;
+  color: $off-white;
+  align-items: center;
+  input {
+    margin: 1rem;
+  }
+}
+fieldset {
+  border-color: $secondary-color;
+  margin-bottom: $l-size;
+}
+
+legend {
+  background-color: lighten($off-white, $amount: 10%);
+  width: 80%;
+  text-align: center;
+  padding: 1rem;
+  border-radius: 0.2rem;
+}
