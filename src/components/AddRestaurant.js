@@ -16,14 +16,45 @@ export default class AddRestaurant extends React.Component {
 
   render() {
     return (
-      <div>
-        <p>Maximum number of guests: {this.props.maxGuests}</p>
+      <div
+        style={this.props.visible ? { display: "block" } : { display: "none" }}
+        className="container"
+      >
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.handleAddRestaurant}>
-          <label>Guest: {this.props.guestCount}</label>
-          <input type="text" name="restaurant" />
-          <button>Add</button>
+          <div className="formboxcolumn">
+            <label>
+              Enter restaurant pick for guest {this.props.options.length + 1}
+            </label>
+            <input
+              type="text"
+              name="restaurant"
+              placeholder="Texas Roadhouse..."
+            />
+            <button>Add</button>
+            <div className="dark-background">
+              {this.props.options.map(option => (
+                <p key={option}>{option}</p>
+              ))}
+              {this.props.options.length >= 1 && (
+                <a
+                  className="clear-options"
+                  onClick={this.props.handleDeleteOptions}
+                >
+                  Clear
+                </a>
+              )}
+            </div>
+          </div>
         </form>
+
+        <div className="formboxcolumn">
+          {this.props.enablePickARestaurant && (
+            <button onClick={this.props.handleRandomPick}>
+              Pick A Restaurant
+            </button>
+          )}
+        </div>
       </div>
     );
   }

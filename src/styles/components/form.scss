@@ -1,4 +1,4 @@
-.formbox {
+.formboxcolumn {
   padding: 0.5rem 0;
   @include flexbox-display;
   flex-direction: column;
@@ -21,7 +21,7 @@
     cursor: pointer;
   }
 }
-.formboxcheck {
+.formboxrow {
   padding: 0.5rem 0;
   @include flexbox-display;
   width: 90%;
@@ -32,6 +32,7 @@
     margin: 1rem;
   }
 }
+
 fieldset {
   border-color: $secondary-color;
   margin-bottom: $l-size;
@@ -43,4 +44,13 @@ legend {
   text-align: center;
   padding: 1rem;
   border-radius: 0.2rem;
+}
+
+label {
+  margin: 0.8rem 0;
+}
+
+.clear-options {
+  cursor: pointer;
+  color: lighten(#3a5683, 10%);
 }

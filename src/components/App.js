@@ -1,10 +1,9 @@
 import React from "react";
 import Header from "./Header";
 import SettingsForm from "./SettingsForm";
-import RandomRestaurantPicker from "./RandomRestaurant";
-import Options from "./Options";
 import OptionModal from "./OptionModal";
 import ProfileForm from "./ProfileForm";
+import AddRestaurant from "./AddRestaurant";
 
 //import "./index.css";
 //import App from "./components/App";
@@ -12,14 +11,13 @@ import ProfileForm from "./ProfileForm";
 export default class App extends React.Component {
   state = {
     options: [],
-    maxGuests: 0,
+    maxGuests: 2,
     selectedOption: "", //boolean for modal rendering. If empty string will be false.
     favRestaurant: "",
     visible: {
-      profile: true,
+      app: true,
       settings: false,
-      app: false,
-      button: false
+      profile: false
     }
   };
 
@@ -111,32 +109,31 @@ export default class App extends React.Component {
           subtitle="Where will your next meal be?"
         />
 
-        <div className="container">
-          <ProfileForm
-            handleSaveProfile={this.handleSaveProfile}
-            visible={this.state.visible.profile}
-          />
+        <ProfileForm
+          className="container"
+          handleSaveProfile={this.handleSaveProfile}
+          visible={this.state.visible.profile}
+        />
 
-          <SettingsForm
-            handleSubmitForm={this.handleSubmitForm}
-            AddToOptions1={this.AddToOptions1}
-            AddToOptions2={this.AddToOptions2}
-            maxGuests={this.state.maxGuests}
-            currentGuestCount={this.state.options.length}
-            favRestaurant={this.state.favRestaurant}
-            checked={this.state.checked}
-            visible={this.state.visible.settings}
-          />
-        </div>
+        <SettingsForm
+          handleSubmitForm={this.handleSubmitForm}
+          AddToOptions1={this.AddToOptions1}
+          AddToOptions2={this.AddToOptions2}
+          maxGuests={this.state.maxGuests}
+          currentGuestCount={this.state.options.length}
+          favRestaurant={this.state.favRestaurant}
+          checked={this.state.checked}
+          visible={this.state.visible.settings}
+        />
 
-        <RandomRestaurantPicker
+        <AddRestaurant
           options={this.state.options}
           handleAddRestaurant={this.handleAddRestaurant}
           handleDeleteOptions={this.handleDeleteOptions}
           maxGuests={this.state.maxGuests}
-          visible={this.state.visible.app}
           enablePickARestaurant={isMaxNumberOfGuestsReached}
           handleRandomPick={this.handleRandomPick}
+          visible={this.state.visible.app}
         />
 
         <OptionModal

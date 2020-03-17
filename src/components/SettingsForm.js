@@ -1,4 +1,6 @@
 import React from "react";
+import { Link } from "react-router-dom";
+
 export default class SettingsForm extends React.Component {
   state = {
     error: "",
@@ -41,16 +43,17 @@ export default class SettingsForm extends React.Component {
     return (
       <form
         style={this.props.visible ? { display: "block" } : { display: "none" }}
+        className="container"
         onSubmit={this.handleSubmitForm}
       >
         <fieldset>
           {this.state.error && <p>{this.state.error}</p>}
           <legend>Settings</legend>
-          <div className="formbox">
+          <div className="formboxcolumn">
             <label htmlFor="guests">Number of guests</label>
             <input type="number" name="guests" />
           </div>
-          <div className="formboxcheck">
+          <div className="formboxrow">
             <input
               type="checkbox"
               name="randomCheck"
@@ -61,29 +64,23 @@ export default class SettingsForm extends React.Component {
               Add a local restaurant to the list
             </label>
           </div>
-          <div className="formboxcheck">
+          <div
+            style={
+              this.props.favRestaurant
+                ? { display: "block" }
+                : { display: "none" }
+            }
+            className="formboxrow"
+          >
             <input
               type="checkbox"
               name="favRestaurant"
               checked={this.state.checked2}
               onChange={e => this.handleChangeCheckbox2(event)}
-              style={
-                this.props.favRestaurant
-                  ? { display: "block" }
-                  : { display: "none" }
-              }
             />
-            <label
-              style={
-                this.props.favRestaurant
-                  ? { display: "block" }
-                  : { display: "none" }
-              }
-            >
-              Use your favorite restaurant as your choice
-            </label>
+            <label>Use your favorite restaurant as your choice</label>
           </div>
-          <div className="formbox">
+          <div className="formboxcolumn">
             <button>Submit</button>
           </div>
         </fieldset>

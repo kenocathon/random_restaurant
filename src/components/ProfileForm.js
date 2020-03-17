@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 export default class ProfileForm extends React.Component {
   handleSaveProfile = event => {
@@ -15,36 +16,33 @@ export default class ProfileForm extends React.Component {
     return (
       <form
         style={this.props.visible ? { display: "block" } : { display: "none" }}
+        className="container"
         onSubmit={this.handleSaveProfile}
       >
         <fieldset>
           <legend>Profile</legend>
 
-          <div className="formbox">
+          <div className="formboxcolumn">
             <label htmlFor="fname">First Name</label>
             <input type="text" name="fname" required="required" />
           </div>
 
-          <div className="formbox">
-            <label htmlFor="lname" required="required">
-              Last Name
-            </label>
-            <input type="text" name="lname" />
+          <div className="formboxcolumn">
+            <label htmlFor="lname">Last Name</label>
+            <input type="text" name="lname" required="required" />
           </div>
 
-          <div className="formbox">
-            <label htmlFor="mail" required="required">
-              Email Address
-            </label>
-            <input type="email" name="mail" />
+          <div className="formboxcolumn">
+            <label htmlFor="mail">Email Address</label>
+            <input type="email" name="mail" required="required" />
           </div>
 
-          <div className="formbox">
+          <div className="formboxcolumn">
             <label htmlFor="favRestaurant">Favorite Restaurant</label>
             <input type="text" name="favRestaurant" />
           </div>
 
-          <div className="formbox">
+          <div className="formboxcolumn">
             <button>Save</button>
           </div>
         </fieldset>
