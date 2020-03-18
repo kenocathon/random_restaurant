@@ -25,3 +25,8 @@
 
 - All react files and components will be compiled to a build.js file in _/public_
 - All scss files will be compiled to a styles.css file in
+
+### Future plans
+
+- Make a better flow and UI so that it is easier to understand what is expected from the user.
+- Add support for local restuarants using google maps API.
