@@ -1,6 +1,6 @@
 #### This application was built using webpack. Check documentation [here](https://webpack.js.org/concepts/).
 
-#### Hosted github pages site: https://kenocathon.github.io/random_restaurant/public
+#### Hosted github pages site: [Random Restaurant](https://kenocathon.github.io/random_restaurant/public)
 
 ## Technologies used
 
