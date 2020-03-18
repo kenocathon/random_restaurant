@@ -98,6 +98,16 @@ export default class App extends React.Component {
     }
   };
 
+  handleBackButton = () => {
+    this.setState(() => ({
+      visible: {
+        app: false,
+        profile: false,
+        settings: true
+      }
+    }));
+  };
+
   render() {
     const isMaxNumberOfGuestsReached =
       this.state.options.length === this.state.maxGuests;
@@ -134,6 +144,7 @@ export default class App extends React.Component {
           handleRandomPick={this.handleRandomPick}
           localRestaurant={this.state.localRestaurant}
           visible={this.state.visible.app}
+          backButton={this.handleBackButton}
         />
 
         <OptionModal

@@ -16,22 +16,27 @@ export default class AddRestaurant extends React.Component {
 
   render() {
     return (
-      <div
-        style={this.props.visible ? { display: "block" } : { display: "none" }}
-        className="container"
-      >
+      <div className={this.props.visible ? "visible container" : "invisible"}>
         {this.state.error && <p>{this.state.error}</p>}
         <form onSubmit={this.handleAddRestaurant}>
-          <div className="formboxcolumn">
-            <label>
-              Enter restaurant pick for guest {this.props.options.length + 1}
-            </label>
-            <input
-              type="text"
-              name="restaurant"
-              placeholder="Guests favorite restaurant"
-            />
-            <button>Add</button>
+          <div>
+            {this.props.options.length === this.props.maxGuests ? (
+              ""
+            ) : (
+              <div className="formboxcolumn">
+                <label>
+                  Enter restaurant pick for guest{" "}
+                  {this.props.options.length + 1}
+                </label>
+                <input
+                  type="text"
+                  name="restaurant"
+                  placeholder="Guests favorite restaurant"
+                />
+                <button>Add</button>
+              </div>
+            )}
+
             <div className="dark-background">
               {this.props.options.map(option => (
                 <p key={option}>{option}</p>

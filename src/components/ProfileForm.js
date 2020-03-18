@@ -34,8 +34,7 @@ export default class ProfileForm extends React.Component {
   render() {
     return (
       <form
-        style={this.props.visible ? { display: "block" } : { display: "none" }}
-        className="container"
+        className={this.props.visible ? "visible container" : "invisible"}
         onSubmit={this.handleSaveProfile}
       >
         <fieldset>
