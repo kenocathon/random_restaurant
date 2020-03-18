@@ -15,9 +15,7 @@ export default class SettingsForm extends React.Component {
       10
     );
     let error = "";
-    if (Number.isNaN(numberOfGuests)) {
-      error = "Enter the number of guests that will be dining";
-    } else if (numberOfGuests <= 0) {
+    if (numberOfGuests <= 0) {
       error = "The number of guests has to be positive.";
     } else if (numberOfGuests < this.props.currentGuestCount) {
       error = "Invalid settings. More people have signed up than the maximum.";
@@ -51,7 +49,7 @@ export default class SettingsForm extends React.Component {
           <legend>Settings</legend>
           <div className="formboxcolumn">
             <label htmlFor="guests">Number of guests</label>
-            <input type="number" name="guests" />
+            <input type="number" name="guests" required="required" />
           </div>
           <div className="formboxrow">
             <input

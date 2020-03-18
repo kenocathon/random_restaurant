@@ -11,13 +11,14 @@ import AddRestaurant from "./AddRestaurant";
 export default class App extends React.Component {
   state = {
     options: [],
-    maxGuests: 2,
+    maxGuests: 0,
     selectedOption: "", //boolean for modal rendering. If empty string will be false.
     favRestaurant: "",
+    localRestaurant: "",
     visible: {
-      app: true,
+      app: false,
       settings: false,
-      profile: false
+      profile: true
     }
   };
 
@@ -86,9 +87,7 @@ export default class App extends React.Component {
       ];
       const randomNum = Math.floor(Math.random() * restaurantList.length);
       const localRestaurant = restaurantList[randomNum];
-      this.setState(prevState => ({
-        options: prevState.options.concat(localRestaurant)
-      }));
+      this.setState(() => ({ localRestaurant }));
     }
   };
   AddToOptions2 = isChecked => {
@@ -133,6 +132,7 @@ export default class App extends React.Component {
           maxGuests={this.state.maxGuests}
           enablePickARestaurant={isMaxNumberOfGuestsReached}
           handleRandomPick={this.handleRandomPick}
+          localRestaurant={this.state.localRestaurant}
           visible={this.state.visible.app}
         />
 

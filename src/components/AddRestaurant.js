@@ -29,13 +29,19 @@ export default class AddRestaurant extends React.Component {
             <input
               type="text"
               name="restaurant"
-              placeholder="Texas Roadhouse..."
+              placeholder="Guests favorite restaurant"
             />
             <button>Add</button>
             <div className="dark-background">
               {this.props.options.map(option => (
                 <p key={option}>{option}</p>
               ))}
+              {this.props.localRestaurant && (
+                <p>
+                  {this.props.localRestaurant}
+                  <span className="sponsored"> (sponsored)</span>
+                </p>
+              )}
               {this.props.options.length >= 1 && (
                 <a
                   className="clear-options"
