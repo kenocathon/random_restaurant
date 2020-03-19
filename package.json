@@ -1,4 +1,5 @@
 {
+  "homepage": "https://kenocathon.github.io/random_restaurant/public/"
   "name": "random_restaurant",
   "version": "1.0.0",
   "description": "Picks a random restaurant from list using react",
@@ -6,6 +7,8 @@
   "author": "Keenan Ray",
   "license": "MIT",
   "scripts": {
+    "predeploy": "npm run build:prod",
+    "deploy": "gh-pages -d build:prod",
     "build:dev": "webpack",
     "build:prod": "webpack -p --env production",
     "dev-server": "webpack-dev-server",
@@ -21,7 +24,6 @@
     "babel-preset-react": "6.24.1",
     "css-loader": "^3.4.2",
     "extract-text-webpack-plugin": "^4.0.0-beta.0",
-    "gh-pages": "^2.2.0",
     "live-server": "^1.2.1",
     "node-sass": "^4.13.1",
     "normalize.css": "^8.0.1",
