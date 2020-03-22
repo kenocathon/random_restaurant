@@ -3,8 +3,7 @@ import React from "react";
 //exported to Options.js
 export default class AddRestaurant extends React.Component {
   state = {
-    error: "",
-    count: 0
+    error: ""
   };
 
   handleAddRestaurant = e => {
@@ -14,12 +13,9 @@ export default class AddRestaurant extends React.Component {
     this.setState(() => ({ error }));
     e.target.elements.restaurant.value = "";
   };
-  restaurantCounter = () => {
-    this.setState(prevState => ({ count: prevState.count + 1 }));
-  };
 
   render() {
-    const maxGuestsReached = this.state.count === this.props.maxGuests + 1;
+    const maxGuestsReached = this.props.count === this.props.maxGuests + 1;
 
     return (
       <div className={this.props.visible ? "visible" : "invisible"}>
@@ -33,7 +29,7 @@ export default class AddRestaurant extends React.Component {
             <div className="formboxcolumn">
               {maxGuestsReached ? (
                 <label className="picker-label">
-                  Maximum number of guests reached
+                  Maximum number of guests reached!
                 </label>
               ) : (
                 <label className="picker-label">
@@ -47,7 +43,7 @@ export default class AddRestaurant extends React.Component {
               <input type="text" name="restaurant" />
               <button
                 className="add-btn"
-                onClick={this.restaurantCounter}
+                onClick={this.props.restaurantCounter}
                 disabled={maxGuestsReached}
               >
                 Add
@@ -72,8 +68,12 @@ export default class AddRestaurant extends React.Component {
             </div>
           </div>
         </form>
-        <div className="formboxcolumn container">
-          <button onClick={this.props.handleRandomPick}>
+        <div className="btn-wrapper">
+          <button
+            className="important-btn"
+            onClick={e => this.props.handleRandomPick(e)}
+            disabled={!maxGuestsReached}
+          >
             Pick A Restaurant
           </button>
         </div>

@@ -2,6 +2,13 @@
   text-align: center;
   margin-bottom: 2rem;
 }
+h1.page-title {
+  font-size: 6rem;
+}
+
+h2.page-title {
+  margin-bottom: 6rem;
+}
 
 .option {
   border-bottom: 2px solid $secondary-color;
@@ -19,4 +26,23 @@
 
 .invisible {
   display: none;
+}
+
+.btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.important-btn {
+  padding: 3rem 0;
+  margin-top: 10rem;
+  background-color: $secondary-color;
+  border-radius: 5px;
+  border: 1px solid $neon-green;
+  color: $neon-green;
+  width: 50rem;
+  cursor: pointer;
+  &:disabled {
+    cursor: no-drop;
+  }
 }

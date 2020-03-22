@@ -18,7 +18,8 @@ export default class App extends React.Component {
       app: false,
       settings: false,
       profile: true
-    }
+    },
+    count: 0
   };
 
   // Handles Clear button to remove all options from rendering. Sets state to empty
@@ -36,7 +37,10 @@ export default class App extends React.Component {
 
   // Handles selectedOption state and sets to empty when Okay button is clicked.
   handleSelectedOption = () => {
-    this.setState(() => ({ selectedOption: "" }));
+    this.setState(() => ({
+      selectedOption: "",
+      options: []
+    }));
   };
 
   // handles error for AddRestaurant Component and sets state to new array of options.
@@ -56,6 +60,7 @@ export default class App extends React.Component {
   handleSubmitForm = numberOfGuests => {
     this.setState(() => ({
       maxGuests: numberOfGuests,
+      options: [],
       visible: {
         settings: false,
         app: true
@@ -121,10 +126,44 @@ export default class App extends React.Component {
     });
   };
 
+  linkControllerProfile = () => {
+    this.setState(() => ({
+      maxGuests: 0,
+      options: [],
+      visible: {
+        profile: true,
+        app: false,
+        settings: false
+      }
+    }));
+  };
+
+  linkControllerSettings = () => {
+    this.setState(() => ({
+      maxGuests: 0,
+      options: [],
+      visible: {
+        profile: false,
+        app: false,
+        settings: true
+      }
+    }));
+  };
+  restaurantCounter = () => {
+    this.setState({
+      count: this.state.count + 1
+    });
+  };
+
   render() {
     return (
       <div>
-        <Header title="Random Restaurant" goToProfile={this.goToProfile} />
+        <Header
+          title="Random Restaurant"
+          goToProfile={this.goToProfile}
+          linkControllerProfile={this.linkControllerProfile}
+          linkControllerSettings={this.linkControllerSettings}
+        />
 
         <ProfileForm
           className="container"
@@ -150,8 +189,9 @@ export default class App extends React.Component {
           maxGuests={this.state.maxGuests}
           handleRandomPick={this.handleRandomPick}
           localRestaurant={this.state.localRestaurant}
-          backButton={this.handleBackButton}
           visible={this.state.visible.app}
+          count={this.state.count}
+          restaurantCounter={this.restaurantCounter}
         />
 
         <OptionModal

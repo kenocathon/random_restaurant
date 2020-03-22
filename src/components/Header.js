@@ -1,19 +1,24 @@
 import React from "react";
 
 const Header = props => (
-  <header>
-    <div className="branding">
-      <h1> {props.title}</h1>
-    </div>
+  <nav>
+    <header>
+      <div className="branding">
+        <h1> {props.title}</h1>
+      </div>
+    </header>
     <ul>
-      <li>
-        <a href="/profile" onClick={props.goToProfile}>
-          Profile
-        </a>
+      <li onClick={() => props.linkControllerProfile()} className="header-link">
+        Profile
       </li>
-      <li>Settings</li>
+      <li
+        onClick={() => props.linkControllerSettings()}
+        className="header-link"
+      >
+        Settings
+      </li>
     </ul>
-  </header>
+  </nav>
 );
 
 export default Header;

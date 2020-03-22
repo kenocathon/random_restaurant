@@ -2,30 +2,20 @@ header {
   background: $secondary-color;
   border-bottom: #66fcf1 3px solid;
   color: #66fcf1;
-  margin-bottom: 10rem;
   padding: $m-size 0;
   opacity: 0.8;
+  max-height: 20rem;
   a {
     color: #66fcf1;
   }
 
   .branding {
     padding-top: 1rem;
-    font-size: 2rem;
+    font-size: 3rem;
     text-align: center;
     font-family: vortice-concept, sans-serif;
     font-weight: 400;
     font-style: normal;
-  }
-  ul {
-    @include flexbox-display;
-    margin-right: 2rem;
-    position: absolute;
-    top: 15rem;
-    li {
-      list-style: none;
-      padding: 2rem;
-    }
   }
 }
 
@@ -33,4 +23,17 @@ header {
   font-size: $l-size;
   margin: 0 3rem;
   color: #66fcf1;
+}
+
+ul {
+  @include flexbox-display;
+
+  li {
+    list-style: none;
+    padding: 0 2rem;
+    font-size: 2.8rem;
+    cursor: pointer;
+    color: $neon-green;
+    margin-top: 0;
+  }
 }
