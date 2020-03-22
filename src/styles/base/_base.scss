@@ -4,9 +4,10 @@ html {
   line-height: 1.6;
 }
 body {
-  background-color: $primary-color;
+  background-color: black;
   font-family: Helvetica, Arial, sans-serif;
   font-size: $m-size;
+  color: white;
 }
 
 p {
@@ -16,8 +17,10 @@ p {
 
 a {
   margin: 1rem;
+  text-decoration: none;
+  color: white;
 }
+
 button {
-  background-color: $off-white;
   padding: 1rem;
 }

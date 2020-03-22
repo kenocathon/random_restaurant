@@ -1,6 +1,6 @@
 //Colors
 $primary-color: #333745;
-$secondary-color: #20222b;
+$secondary-color: #393c49;
 $off-white: #a5afd7;
 $error-text: #7d4e57;
 
@@ -14,7 +14,7 @@ $xl-size: 4.8rem;
 }
 
 .error {
-  background-color: darken($off-white, 10%);
+  background-color: white;
   color: $error-text;
   padding: 1rem;
   font-size: 2rem;

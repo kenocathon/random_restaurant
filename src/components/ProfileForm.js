@@ -1,9 +1,10 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { createBrowserHistory as history } from "history";
 
 export default class ProfileForm extends React.Component {
   state = {
-    error: ""
+    error: "",
+    value: ""
   };
 
   handleSaveProfile = event => {
@@ -21,6 +22,12 @@ export default class ProfileForm extends React.Component {
     } else if (!mail) {
       error = "Error: please enter email address";
     } else {
+      localStorage.clear();
+      localStorage.setItem("firstName", fname);
+      localStorage.setItem("lastName", lname);
+      localStorage.setItem("eMail", mail);
+      localStorage.setItem("favRestaurant", favRestaurant);
+
       this.props.handleSaveProfile(favRestaurant);
       event.target.elements.fname.value = "";
       event.target.elements.lname.value = "";
@@ -34,14 +41,17 @@ export default class ProfileForm extends React.Component {
   render() {
     return (
       <form
-        className={this.props.visible ? "visible container" : "invisible"}
+        className={this.props.visible ? "container visible" : "invisible"}
         onSubmit={this.handleSaveProfile}
       >
         <fieldset>
-          <legend>Profile</legend>
+          <legend>Public Profile</legend>
+
           {this.state.error && <p className="error">{this.state.error}</p>}
+
           <div className="formboxcolumn">
             <label htmlFor="fname">First Name</label>
+
             <input type="text" name="fname" required="required" />
           </div>
 

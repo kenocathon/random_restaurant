@@ -1,6 +1,6 @@
 import React from "react";
-import Header from "./Header";
 import SettingsForm from "./SettingsForm";
+import Header from "./Header";
 import OptionModal from "./OptionModal";
 import ProfileForm from "./ProfileForm";
 import AddRestaurant from "./AddRestaurant";
@@ -13,7 +13,6 @@ export default class App extends React.Component {
     options: [],
     maxGuests: 0,
     selectedOption: "", //boolean for modal rendering. If empty string will be false.
-    favRestaurant: "",
     localRestaurant: "",
     visible: {
       app: false,
@@ -31,6 +30,7 @@ export default class App extends React.Component {
   handleRandomPick = () => {
     const randomNum = Math.floor(Math.random() * this.state.options.length);
     const option = this.state.options[randomNum];
+
     this.setState(() => ({ selectedOption: option }));
   };
 
@@ -58,8 +58,7 @@ export default class App extends React.Component {
       maxGuests: numberOfGuests,
       visible: {
         settings: false,
-        app: true,
-        button: true
+        app: true
       }
     }));
   };
@@ -68,8 +67,8 @@ export default class App extends React.Component {
     this.setState(() => ({
       favRestaurant,
       visible: {
-        profile: false,
-        settings: true
+        settings: true,
+        profile: false
       }
     }));
   };
@@ -85,11 +84,25 @@ export default class App extends React.Component {
         "Chillis",
         "Applebees"
       ];
-      const randomNum = Math.floor(Math.random() * restaurantList.length);
-      const localRestaurant = restaurantList[randomNum];
-      this.setState(() => ({ localRestaurant }));
+      const filteredList = restaurantList.filter(
+        value =>
+          value.toLowerCase() !=
+          localStorage.getItem("favRestaurant").toLowerCase()
+      );
+
+      const randomNum = Math.floor(Math.random() * filteredList.length);
+      let localRestaurant = filteredList[randomNum];
+
+      localRestaurant =
+        localRestaurant.charAt(0).toUpperCase() + localRestaurant.slice(1);
+
+      this.setState(prevState => ({
+        options: prevState.options.concat(localRestaurant),
+        localRestaurant
+      }));
     }
   };
+
   AddToOptions2 = isChecked => {
     if (isChecked) {
       this.setState(prevState => ({
@@ -98,25 +111,20 @@ export default class App extends React.Component {
     }
   };
 
-  handleBackButton = () => {
-    this.setState(() => ({
+  goToProfile = () => {
+    this.setState = () => ({
       visible: {
+        profile: true,
         app: false,
-        profile: false,
-        settings: true
+        settings: false
       }
-    }));
+    });
   };
 
   render() {
-    const isMaxNumberOfGuestsReached =
-      this.state.options.length === this.state.maxGuests;
     return (
       <div>
-        <Header
-          title="Random Restaurant"
-          subtitle="Where will your next meal be?"
-        />
+        <Header title="Random Restaurant" goToProfile={this.goToProfile} />
 
         <ProfileForm
           className="container"
@@ -140,16 +148,15 @@ export default class App extends React.Component {
           handleAddRestaurant={this.handleAddRestaurant}
           handleDeleteOptions={this.handleDeleteOptions}
           maxGuests={this.state.maxGuests}
-          enablePickARestaurant={isMaxNumberOfGuestsReached}
           handleRandomPick={this.handleRandomPick}
           localRestaurant={this.state.localRestaurant}
-          visible={this.state.visible.app}
           backButton={this.handleBackButton}
+          visible={this.state.visible.app}
         />
 
         <OptionModal
-          selectedOption={this.state.selectedOption}
           handleSelectedOption={this.handleSelectedOption}
+          selectedOption={this.state.selectedOption}
         />
       </div>
     );

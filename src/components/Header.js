@@ -1,11 +1,18 @@
-import React, { Component } from "react";
+import React from "react";
 
 const Header = props => (
   <header>
-    <div className="container">
-      <h1 className="header__title">{props.title}</h1>
-      <h2 className="header__subtitle">{props.subtitle}</h2>
+    <div className="branding">
+      <h1> {props.title}</h1>
     </div>
+    <ul>
+      <li>
+        <a href="/profile" onClick={props.goToProfile}>
+          Profile
+        </a>
+      </li>
+      <li>Settings</li>
+    </ul>
   </header>
 );
 
