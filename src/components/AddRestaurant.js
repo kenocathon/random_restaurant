@@ -19,7 +19,7 @@ export default class AddRestaurant extends React.Component {
 
     return (
       <div className={this.props.visible ? "visible" : "invisible"}>
-        {this.state.error && <p>{this.state.error}</p>}
+        {this.state.error && <p className="error">{this.state.error}</p>}
         <h1 className="page-title">Random Picker</h1>
         <h2 className="page-title">
           Max number of guests: {this.props.maxGuests}
