@@ -124,49 +124,42 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <BrowserRouter>
-        <div>
-          <Route children={() => <Header title="Random Restaurant" />} />
+      <div>
+        <Route children={() => <Header title="Random Restaurant" />} />
 
-          <ProfileForm
-            className="container"
-            firstName={this.state.fName}
-            lastName={this.state.lName}
-            eMail={this.state.email}
-            favRestaurant={this.state.favRestaurant}
-            handleFavRestaurant={this.handleFavRestaurant}
-          />
+        <ProfileForm
+          className="container"
+          firstName={this.state.fName}
+          lastName={this.state.lName}
+          eMail={this.state.email}
+          favRestaurant={this.state.favRestaurant}
+          handleFavRestaurant={this.handleFavRestaurant}
+        />
 
-          <SettingsForm
-            handleSettingsForm={this.handleSettingsForm}
-            favRestaurant={this.state.favRestaurant}
-            addLocalToOptions={this.addLocalToOptions}
-            addFavToOptions={this.addFavToOptions}
-            maxGuests={this.state.maxGuests}
-          />
+        <SettingsForm
+          handleSettingsForm={this.handleSettingsForm}
+          favRestaurant={this.state.favRestaurant}
+          addLocalToOptions={this.addLocalToOptions}
+          addFavToOptions={this.addFavToOptions}
+          maxGuests={this.state.maxGuests}
+        />
 
-          <Route
-            path="/app"
-            render={() => (
-              <AddRestaurant
-                options={this.state.options}
-                handleAddRestaurant={this.handleAddRestaurant}
-                handleDeleteOptions={this.handleDeleteOptions}
-                maxGuests={this.state.maxGuests}
-                handleRandomPick={this.handleRandomPick}
-                localRestaurant={this.state.localRestaurant}
-                favRestaurant={this.state.favRestaurant}
-                currentGuestCount={this.state.options.length}
-              />
-            )}
-          />
+        <AddRestaurant
+          options={this.state.options}
+          handleAddRestaurant={this.handleAddRestaurant}
+          handleDeleteOptions={this.handleDeleteOptions}
+          maxGuests={this.state.maxGuests}
+          handleRandomPick={this.handleRandomPick}
+          localRestaurant={this.state.localRestaurant}
+          favRestaurant={this.state.favRestaurant}
+          currentGuestCount={this.state.options.length}
+        />
 
-          <OptionModal
-            handleSelectedOption={this.handleSelectedOption}
-            selectedOption={this.state.selectedOption}
-          />
-        </div>
-      </BrowserRouter>
+        <OptionModal
+          handleSelectedOption={this.handleSelectedOption}
+          selectedOption={this.state.selectedOption}
+        />
+      </div>
     );
   }
 }

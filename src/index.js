@@ -6,5 +6,11 @@ import SettingsForm from "./components/SettingsForm";
 import ProfileForm from "./components/ProfileForm";
 import normalize from "normalize.css";
 import "./styles/styles.scss";
+import { BrowserRouter } from "react-router-dom";
 
-ReactDOM.render(<App />, document.getElementById("root"));
+ReactDOM.render(
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>,
+  document.getElementById("root")
+);
