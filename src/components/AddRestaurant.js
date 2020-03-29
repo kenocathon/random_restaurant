@@ -6,11 +6,6 @@ class AddRestaurant extends React.Component {
   state = {
     error: ""
   };
-  componentWillMount = () => {
-    if (this.props.maxGuests === 0) {
-      this.props.history.push("/settings");
-    }
-  };
 
   handleAddRestaurant = e => {
     e.preventDefault();
