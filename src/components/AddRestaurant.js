@@ -1,9 +1,15 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 
 //exported to Options.js
-export default class AddRestaurant extends React.Component {
+class AddRestaurant extends React.Component {
   state = {
     error: ""
+  };
+  componentWillMount = () => {
+    if (this.props.maxGuests === 0) {
+      this.props.history.push("/settings");
+    }
   };
 
   handleAddRestaurant = e => {
@@ -15,10 +21,18 @@ export default class AddRestaurant extends React.Component {
   };
 
   render() {
-    const maxGuestsReached = this.props.count === this.props.maxGuests + 1;
+    const maxGuestsReached = () => {
+      if (this.props.favRestaurant && this.props.localRestaurant) {
+        return this.props.currentGuestCount === this.props.maxGuests + 2;
+      } else if (this.props.favRestaurant || this.props.localRestaurant) {
+        return this.props.currentGuestCount === this.props.maxGuests + 1;
+      } else {
+        return this.props.currentGuestCount === this.props.maxGuests;
+      }
+    };
 
     return (
-      <div className={this.props.visible ? "visible" : "invisible"}>
+      <div>
         {this.state.error && <p className="error">{this.state.error}</p>}
         <h1 className="page-title">Random Picker</h1>
         <h2 className="page-title">
@@ -27,24 +41,32 @@ export default class AddRestaurant extends React.Component {
         <form onSubmit={this.handleAddRestaurant}>
           <div className="container">
             <div className="formboxcolumn">
-              {maxGuestsReached ? (
+              {maxGuestsReached() ? (
                 <label className="picker-label">
-                  Maximum number of guests reached!
+                  Maximum number of picks reached!
                 </label>
               ) : (
                 <label className="picker-label">
-                  Enter restaurant choice for guest{" "}
-                  {this.props.localRestaurant
-                    ? this.props.options.length
-                    : this.props.options.length + 1}
+                  Enter a restaurant choice
                 </label>
               )}
 
-              <input type="text" name="restaurant" />
+              <input
+                type="text"
+                name="restaurant"
+                style={
+                  maxGuestsReached()
+                    ? { display: "none" }
+                    : { display: "block" }
+                }
+              />
               <button
                 className="add-btn"
-                onClick={this.props.restaurantCounter}
-                disabled={maxGuestsReached}
+                style={
+                  maxGuestsReached()
+                    ? { display: "none" }
+                    : { display: "block" }
+                }
               >
                 Add
               </button>
@@ -72,7 +94,9 @@ export default class AddRestaurant extends React.Component {
           <button
             className="important-btn"
             onClick={e => this.props.handleRandomPick(e)}
-            disabled={!maxGuestsReached}
+            style={
+              maxGuestsReached() ? { display: "block" } : { display: "none" }
+            }
           >
             Pick A Restaurant
           </button>
@@ -81,3 +105,4 @@ export default class AddRestaurant extends React.Component {
     );
   }
 }
+export default withRouter(AddRestaurant);

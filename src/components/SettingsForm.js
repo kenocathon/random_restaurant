@@ -1,94 +1,109 @@
 import React from "react";
+import { withRouter, Route } from "react-router-dom";
 
-export default class SettingsForm extends React.Component {
+class SettingsForm extends React.Component {
   state = {
     error: "",
-    checked1: false, // Add local restaurant checkbox
-    checked2: false // Add favorite restaurant checkbox
+    guestCount: 4,
+    localRestaurantChecked: false, // Add local restaurant checkbox
+    favRestaurantChecked: false // Add favorite restaurant checkbox
   };
 
-  handleSubmitForm = event => {
+  handleSettingsForm = event => {
     event.preventDefault();
     const numberOfGuests = Number.parseInt(
       event.target.elements.guests.value,
       10
     );
+    const error = this.props.handleSettingsForm(numberOfGuests); // error is returned from App.js hadleSettingForm method.
 
-    let error = "";
-    if (!numberOfGuests) {
-      error = "Please enter the number of guests attending";
-    } else if (numberOfGuests > 10) {
-      error = "The maximum number of guests allowed is 10";
-    } else if (numberOfGuests <= 0) {
-      error = "Guests must be a positive integer";
-    } else {
-      this.props.handleSubmitForm(numberOfGuests);
+    this.props.addLocalToOptions(this.state.localRestaurantChecked); // Calls method in App.js to add local restaurant to options []
+    this.props.addFavToOptions(this.state.favRestaurantChecked); // Calls method in App,js to add fav restaurant to options [].
 
-      this.props.AddToOptions1(this.state.checked1); // Calls function in App to add local restaurant to options []
-      this.props.AddToOptions2(this.state.checked2); // Calls function in App to add fav restaurant to options [].
+    this.setState(() => ({
+      error
+    }));
 
-      this.setState(() => ({ error })); //If nothing is returned it will remain empty.
+    if (!error) {
+      this.props.history.push("/app"); // If no error redirect to the app. AddRestaurant.js
     }
   };
 
-  handleChangeCheckbox1 = event => {
-    const checked = event.target.checked; // clicked action
-    this.setState({ checked1: checked });
+  favoriteRestaurantChecked = event => {
+    const checked = event.target.checked; // controlled checkbox
+    this.setState({ favRestaurantChecked: checked });
   };
-  handleChangeCheckbox2 = event => {
-    const checked = event.target.checked; // clicked action
-    this.setState({ checked2: checked });
+
+  localRestaurantChecked = event => {
+    const checked = event.target.checked; // controlled checkbox
+    this.setState({ localRestaurantChecked: checked });
+  };
+
+  changeGuestCount = event => {
+    const guestCount = event.target.value;
+    this.setState({ guestCount });
   };
 
   render() {
     return (
-      <form
-        className={this.props.visible ? "container visible" : "invisible"}
-        onSubmit={this.handleSubmitForm}
-      >
-        <fieldset>
-          {this.state.error && <p className="error">{this.state.error}</p>}
+      <Route
+        path="/settings"
+        render={props => (
+          <form className="container" onSubmit={this.handleSettingsForm}>
+            <fieldset>
+              {this.state.error && <p className="error">{this.state.error}</p>}
 
-          <legend>Settings</legend>
-          <div className="formboxcolumn">
-            <label htmlFor="guests">Enter total number of guests</label>
-            <input type="number" name="guests" required="required" />
-          </div>
+              <legend>Settings</legend>
+              <div className="formboxcolumn">
+                <label htmlFor="guests">Enter total number of guests</label>
+                <input
+                  type="number"
+                  name="guests"
+                  required="required"
+                  value={this.state.guestCount}
+                  onChange={this.changeGuestCount}
+                />
+              </div>
 
-          <div className="formboxrow">
-            <input
-              type="checkbox"
-              name="randomCheck"
-              checked={this.state.checked1}
-              onChange={e => this.handleChangeCheckbox1(event)}
-            />
+              <div className="formboxrow">
+                <input
+                  type="checkbox"
+                  id="randomCheck"
+                  checked={this.state.localRestaurantChecked}
+                  onChange={e => this.localRestaurantChecked(event)}
+                />
 
-            <label htmlFor="randomCheck">
-              Add a local restaurant to the list
-            </label>
-          </div>
-          <div
-            style={
-              this.props.favRestaurant
-                ? { display: "block" }
-                : { display: "none" }
-            }
-            className="formboxrow"
-          >
-            <input
-              type="checkbox"
-              name="favRestaurant"
-              checked={this.state.checked2}
-              onChange={e => this.handleChangeCheckbox2(event)}
-            />
+                <label htmlFor="randomCheck">
+                  Add a local restaurant to the list of choices
+                </label>
+              </div>
+              <div
+                style={
+                  this.props.favRestaurant
+                    ? { display: "block" }
+                    : { display: "none" }
+                }
+                className="formboxrow"
+              >
+                <input
+                  type="checkbox"
+                  id="favRestaurant"
+                  checked={this.state.favRestaurantChecked}
+                  onChange={e => this.favoriteRestaurantChecked(event)}
+                />
 
-            <label>Use your favorite restaurant as your choice</label>
-          </div>
-          <div className="formboxcolumn">
-            <button>Submit</button>
-          </div>
-        </fieldset>
-      </form>
+                <label htmlFor="favRestaurant">
+                  Use your favorite restaurant as your choice
+                </label>
+              </div>
+              <div className="formboxcolumn">
+                <button>Start App</button>
+              </div>
+            </fieldset>
+          </form>
+        )}
+      />
     );
   }
 }
+export default withRouter(SettingsForm);

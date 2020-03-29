@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Header = props => (
   <nav>
     <header>
@@ -8,15 +8,12 @@ const Header = props => (
       </div>
     </header>
     <ul>
-      <li onClick={() => props.linkControllerProfile()} className="header-link">
-        Profile
-      </li>
-      <li
-        onClick={() => props.linkControllerSettings()}
-        className="header-link"
-      >
-        Settings
-      </li>
+      <Link to="/">
+        <li className="header-link">Profile</li>
+      </Link>
+      <Link to="/settings">
+        <li className="header-link">Settings</li>
+      </Link>
     </ul>
   </nav>
 );
