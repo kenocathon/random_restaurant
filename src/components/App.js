@@ -4,7 +4,7 @@ import Header from "./Header";
 import OptionModal from "./OptionModal";
 import ProfileForm from "./ProfileForm";
 import AddRestaurant from "./AddRestaurant";
-import { BrowserRouter, Route } from "react-router-dom";
+import { Route, HashRouter } from "react-router-dom";
 
 //import "./index.css";
 //import App from "./components/App";
@@ -15,20 +15,27 @@ export default class App extends React.Component {
     maxGuests: 0, // sets limit of guests and used to disable buttons in AddRestaurant.js
     selectedOption: "", // boolean for modal rendering. If empty string will be false.
     localRestaurant: "", // name of random local restaurant
-    favRestaurant: "" // name of restaurant set it profile as favorite restaurant
+    favRestaurant: "", // name of restaurant set it profile as favorite restaurant
+    favIsChecked: "", // determines if "add fav restaurant to list" is checked so when you clear the list it stays.
+    localIsChecked: "" // determines if "add local restaurant to list" is checked so when you clear the list it stays
   };
 
   // Handles Clear button to remove all options from rendering. Sets state to empty
   handleDeleteOptions = () => {
-    if (this.state.favRestaurant && this.state.localRestaurant) {
+    if (
+      this.state.favRestaurant &&
+      this.state.favIsChecked &&
+      this.state.localRestaurant &&
+      this.state.localIsChecked
+    ) {
       this.setState(() => ({
-        options: [this.state.favRestaurant, this.state.localRestaurant]
+        options: [this.state.localRestaurant, this.state.favRestaurant]
       }));
-    } else if (this.state.favRestaurant) {
+    } else if (this.state.favRestaurant && this.state.favIsChecked) {
       this.setState(() => ({
         options: [this.state.favRestaurant]
       }));
-    } else if (this.state.localRestaurant) {
+    } else if (this.state.localRestaurant && this.state.localIsChecked) {
       this.setState(() => ({
         options: [this.state.localRestaurant]
       }));
@@ -105,7 +112,8 @@ export default class App extends React.Component {
 
       this.setState(prevState => ({
         options: prevState.options.concat(localRestaurant),
-        localRestaurant
+        localRestaurant,
+        localIsChecked: isChecked
       }));
     }
   };
@@ -113,7 +121,8 @@ export default class App extends React.Component {
   addFavToOptions = isChecked => {
     if (isChecked) {
       this.setState(prevState => ({
-        options: prevState.options.concat(this.state.favRestaurant)
+        options: prevState.options.concat(this.state.favRestaurant),
+        favIsChecked: isChecked
       }));
     }
   };
@@ -124,42 +133,59 @@ export default class App extends React.Component {
 
   render() {
     return (
-      <div>
-        <Route children={() => <Header title="Random Restaurant" />} />
+      <HashRouter basename="/">
+        <div>
+          <Route children={() => <Header title="Random Restaurant" />} />
+          <Route
+            exact
+            path="/"
+            render={() => (
+              <ProfileForm
+                className="container"
+                firstName={this.state.fName}
+                lastName={this.state.lName}
+                eMail={this.state.email}
+                favRestaurant={this.state.favRestaurant}
+                handleFavRestaurant={this.handleFavRestaurant}
+              />
+            )}
+          />
+          <Route
+            path="/settings"
+            render={() => (
+              <SettingsForm
+                handleSettingsForm={this.handleSettingsForm}
+                favRestaurant={this.state.favRestaurant}
+                addLocalToOptions={this.addLocalToOptions}
+                addFavToOptions={this.addFavToOptions}
+                maxGuests={this.state.maxGuests}
+              />
+            )}
+          />
+          <Route
+            path="/app"
+            render={() => (
+              <AddRestaurant
+                options={this.state.options}
+                handleAddRestaurant={this.handleAddRestaurant}
+                handleDeleteOptions={this.handleDeleteOptions}
+                maxGuests={this.state.maxGuests}
+                handleRandomPick={this.handleRandomPick}
+                localRestaurant={this.state.localRestaurant}
+                favRestaurant={this.state.favRestaurant}
+                currentGuestCount={this.state.options.length}
+                favIsChecked={this.state.favIsChecked}
+                localIsChecked={this.state.localIsChecked}
+              />
+            )}
+          />
 
-        <ProfileForm
-          className="container"
-          firstName={this.state.fName}
-          lastName={this.state.lName}
-          eMail={this.state.email}
-          favRestaurant={this.state.favRestaurant}
-          handleFavRestaurant={this.handleFavRestaurant}
-        />
-
-        <SettingsForm
-          handleSettingsForm={this.handleSettingsForm}
-          favRestaurant={this.state.favRestaurant}
-          addLocalToOptions={this.addLocalToOptions}
-          addFavToOptions={this.addFavToOptions}
-          maxGuests={this.state.maxGuests}
-        />
-
-        <AddRestaurant
-          options={this.state.options}
-          handleAddRestaurant={this.handleAddRestaurant}
-          handleDeleteOptions={this.handleDeleteOptions}
-          maxGuests={this.state.maxGuests}
-          handleRandomPick={this.handleRandomPick}
-          localRestaurant={this.state.localRestaurant}
-          favRestaurant={this.state.favRestaurant}
-          currentGuestCount={this.state.options.length}
-        />
-
-        <OptionModal
-          handleSelectedOption={this.handleSelectedOption}
-          selectedOption={this.state.selectedOption}
-        />
-      </div>
+          <OptionModal
+            handleSelectedOption={this.handleSelectedOption}
+            selectedOption={this.state.selectedOption}
+          />
+        </div>
+      </HashRouter>
     );
   }
 }

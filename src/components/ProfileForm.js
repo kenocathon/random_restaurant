@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, Route, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class ProfileForm extends React.Component {
   state = {
@@ -48,72 +48,66 @@ class ProfileForm extends React.Component {
 
   render() {
     return (
-      <Route
-        exact
-        path="/"
-        render={props => (
-          <form className="container" onSubmit={this.handleErrors}>
-            <fieldset>
-              <legend>Public Profile</legend>
+      <form className="container" onSubmit={this.handleErrors}>
+        <fieldset>
+          <legend>Public Profile</legend>
 
-              {this.state.error && <p className="error">{this.state.error}</p>}
+          {this.state.error && <p className="error">{this.state.error}</p>}
 
-              <div className="formboxcolumn">
-                <label htmlFor="fname">First Name *</label>
+          <div className="formboxcolumn">
+            <label htmlFor="fname">First Name *</label>
 
-                <input
-                  type="text"
-                  name="fname"
-                  id="fname"
-                  required="required"
-                  value={this.state.firstName}
-                  onChange={this.handleChangeFirstName}
-                />
-              </div>
+            <input
+              type="text"
+              name="fname"
+              id="fname"
+              required="required"
+              value={this.state.firstName}
+              onChange={this.handleChangeFirstName}
+            />
+          </div>
 
-              <div className="formboxcolumn">
-                <label htmlFor="lname">Last Name *</label>
-                <input
-                  type="text"
-                  name="lname"
-                  id="lname"
-                  required="required"
-                  value={this.state.lastName}
-                  onChange={this.handleChangeLastName}
-                />
-              </div>
+          <div className="formboxcolumn">
+            <label htmlFor="lname">Last Name *</label>
+            <input
+              type="text"
+              name="lname"
+              id="lname"
+              required="required"
+              value={this.state.lastName}
+              onChange={this.handleChangeLastName}
+            />
+          </div>
 
-              <div className="formboxcolumn">
-                <label htmlFor="mail">Email Address *</label>
-                <input
-                  type="email"
-                  name="mail"
-                  id="mail"
-                  required="required"
-                  value={this.state.eMail}
-                  onChange={this.handleChangeEmail}
-                />
-              </div>
+          <div className="formboxcolumn">
+            <label htmlFor="mail">Email Address *</label>
+            <input
+              type="email"
+              name="mail"
+              id="mail"
+              required="required"
+              value={this.state.eMail}
+              onChange={this.handleChangeEmail}
+            />
+          </div>
 
-              <div className="formboxcolumn">
-                <label htmlFor="favRestaurant">Favorite Restaurant</label>
-                <input
-                  type="text"
-                  name="favRestaurant"
-                  id="favRestaurant"
-                  required="required"
-                  value={this.props.favRestaurant}
-                  onChange={this.handleChangeFavoriteRestaurant}
-                />
-              </div>
+          <div className="formboxcolumn">
+            <label htmlFor="favRestaurant">Favorite Restaurant *</label>
+            <input
+              type="text"
+              name="favRestaurant *"
+              id="favRestaurant"
+              required="required"
+              value={this.props.favRestaurant}
+              onChange={this.handleChangeFavoriteRestaurant}
+            />
+          </div>
 
-              <div className="formboxcolumn">
-                <button>Save</button>
-              </div>
-            </fieldset>
-          </form>
-        )}
-      />
+          <div className="formboxcolumn">
+            <button>Save</button>
+          </div>
+        </fieldset>
+      </form>
     );
   }
 }

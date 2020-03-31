@@ -1,5 +1,5 @@
 import React from "react";
-import { withRouter, Route } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 
 class SettingsForm extends React.Component {
   state = {
@@ -7,6 +7,21 @@ class SettingsForm extends React.Component {
     guestCount: 4,
     localRestaurantChecked: false, // Add local restaurant checkbox
     favRestaurantChecked: false // Add favorite restaurant checkbox
+  };
+
+  favoriteRestaurantChecked = event => {
+    const checked = event.target.checked; // controlled checkbox
+    this.setState({ favRestaurantChecked: checked });
+  };
+
+  localRestaurantChecked = event => {
+    const checked = event.target.checked; // controlled checkbox
+    this.setState({ localRestaurantChecked: checked });
+  };
+
+  changeGuestCount = event => {
+    const guestCount = event.target.value;
+    this.setState({ guestCount });
   };
 
   handleSettingsForm = event => {
@@ -29,80 +44,60 @@ class SettingsForm extends React.Component {
     }
   };
 
-  favoriteRestaurantChecked = event => {
-    const checked = event.target.checked; // controlled checkbox
-    this.setState({ favRestaurantChecked: checked });
-  };
-
-  localRestaurantChecked = event => {
-    const checked = event.target.checked; // controlled checkbox
-    this.setState({ localRestaurantChecked: checked });
-  };
-
-  changeGuestCount = event => {
-    const guestCount = event.target.value;
-    this.setState({ guestCount });
-  };
-
   render() {
     return (
-      <Route
-        path="/settings"
-        render={props => (
-          <form className="container" onSubmit={this.handleSettingsForm}>
-            <fieldset>
-              {this.state.error && <p className="error">{this.state.error}</p>}
+      <form className="container" onSubmit={this.handleSettingsForm}>
+        <fieldset>
+          {this.state.error && <p className="error">{this.state.error}</p>}
 
-              <legend>Settings</legend>
-              <div className="formboxcolumn">
-                <label htmlFor="guests">Enter total number of guests</label>
-                <input
-                  type="number"
-                  name="guests"
-                  required="required"
-                  value={this.state.guestCount}
-                  onChange={this.changeGuestCount}
-                />
-              </div>
+          <legend>Settings</legend>
+          <div className="formboxcolumn">
+            <label htmlFor="guests">Enter total number of guests</label>
+            <input
+              type="number"
+              name="guests"
+              required="required"
+              value={this.state.guestCount}
+              onChange={this.changeGuestCount}
+            />
+          </div>
 
-              <div className="formboxrow">
-                <input
-                  type="checkbox"
-                  id="randomCheck"
-                  checked={this.state.localRestaurantChecked}
-                  onChange={e => this.localRestaurantChecked(event)}
-                />
+          <div className="formboxrow">
+            <input
+              type="checkbox"
+              id="randomCheck"
+              checked={this.state.localRestaurantChecked}
+              onChange={e => this.localRestaurantChecked(event)}
+            />
 
-                <label htmlFor="randomCheck">
-                  Add a local restaurant to the list of choices
-                </label>
-              </div>
-              <div
-                style={
-                  this.props.favRestaurant
-                    ? { display: "block" }
-                    : { display: "none" }
-                }
-                className="formboxrow"
-              >
-                <input
-                  type="checkbox"
-                  id="favRestaurant"
-                  checked={this.state.favRestaurantChecked}
-                  onChange={e => this.favoriteRestaurantChecked(event)}
-                />
+            <label htmlFor="randomCheck">
+              Add a local restaurant to the list of choices
+            </label>
+          </div>
+          <div
+            style={
+              this.props.favRestaurant
+                ? { display: "block" }
+                : { display: "none" }
+            }
+            className="formboxrow"
+          >
+            <input
+              type="checkbox"
+              id="favRestaurant"
+              checked={this.state.favRestaurantChecked}
+              onChange={e => this.favoriteRestaurantChecked(event)}
+            />
 
-                <label htmlFor="favRestaurant">
-                  Use your favorite restaurant as your choice
-                </label>
-              </div>
-              <div className="formboxcolumn">
-                <button>Start App</button>
-              </div>
-            </fieldset>
-          </form>
-        )}
-      />
+            <label htmlFor="favRestaurant">
+              Use your favorite restaurant as your choice
+            </label>
+          </div>
+          <div className="formboxcolumn">
+            <button>Start App</button>
+          </div>
+        </fieldset>
+      </form>
     );
   }
 }
