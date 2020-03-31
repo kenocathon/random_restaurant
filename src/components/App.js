@@ -89,6 +89,16 @@ export default class App extends React.Component {
   };
 
   //Add a local restaurant to options state.
+
+  // Boolean that determines if checked in settings form. Favorite Restaurant is stored in local storage
+  addFavToOptions = isChecked => {
+    if (isChecked) {
+      this.setState(prevState => ({
+        options: prevState.options.concat(this.state.favRestaurant),
+        favIsChecked: isChecked
+      }));
+    }
+  };
   addLocalToOptions = isChecked => {
     if (isChecked) {
       const restaurantList = [
@@ -114,15 +124,6 @@ export default class App extends React.Component {
         options: prevState.options.concat(localRestaurant),
         localRestaurant,
         localIsChecked: isChecked
-      }));
-    }
-  };
-  // Boolean that determines if checked in settings form. Favorite Restaurant is stored in local storage
-  addFavToOptions = isChecked => {
-    if (isChecked) {
-      this.setState(prevState => ({
-        options: prevState.options.concat(this.state.favRestaurant),
-        favIsChecked: isChecked
       }));
     }
   };
