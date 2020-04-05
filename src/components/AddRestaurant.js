@@ -49,10 +49,10 @@ class AddRestaurant extends React.Component {
                   Maximum number of picks reached!
                 </label>
               ) : (
-                <label className="picker-label">
-                  Enter a restaurant choice
-                </label>
-              )}
+                  <label className="picker-label">
+                    Enter a restaurant choice
+                  </label>
+                )}
 
               <input
                 type="text"
