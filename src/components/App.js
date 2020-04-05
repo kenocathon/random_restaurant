@@ -4,7 +4,7 @@ import Header from "./Header";
 import OptionModal from "./OptionModal";
 import ProfileForm from "./ProfileForm";
 import AddRestaurant from "./AddRestaurant";
-import { Route, HashRouter } from "react-router-dom";
+import { Route, HashRouter, Switch, Redirect } from "react-router-dom";
 
 //import "./index.css";
 //import App from "./components/App";
@@ -15,6 +15,9 @@ export default class App extends React.Component {
     maxGuests: 0, // sets limit of guests and used to disable buttons in AddRestaurant.js
     selectedOption: "", // boolean for modal rendering. If empty string will be false.
     localRestaurant: "", // name of random local restaurant
+    firstName: "",
+    lastName: "",
+    eMail: "",
     favRestaurant: "", // name of restaurant set it profile as favorite restaurant
     favIsChecked: "", // determines if "add fav restaurant to list" is checked so when you clear the list it stays.
     localIsChecked: "" // determines if "add local restaurant to list" is checked so when you clear the list it stays
@@ -131,6 +134,15 @@ export default class App extends React.Component {
   handleFavRestaurant = restaurant => {
     this.setState(() => ({ favRestaurant: restaurant }));
   };
+  handleFirstName = firstName => {
+    this.setState(() => ({ firstName: firstName }));
+  };
+  handleLastName = lastName => {
+    this.setState(() => ({ lastName: lastName }));
+  };
+  handleEmail = eMail => {
+    this.setState(() => ({ eMail: eMail }));
+  };
 
   render() {
     return (
@@ -143,11 +155,14 @@ export default class App extends React.Component {
             render={() => (
               <ProfileForm
                 className="container"
-                firstName={this.state.fName}
-                lastName={this.state.lName}
-                eMail={this.state.email}
                 favRestaurant={this.state.favRestaurant}
+                firstName={this.state.firstName}
+                lastName={this.state.lastName}
+                eMail={this.state.eMail}
                 handleFavRestaurant={this.handleFavRestaurant}
+                handleFirstName={this.handleFirstName}
+                handleLastName={this.handleLastName}
+                handleEmail={this.handleEmail}
               />
             )}
           />
@@ -180,12 +195,13 @@ export default class App extends React.Component {
               />
             )}
           />
-
-          <OptionModal
-            handleSelectedOption={this.handleSelectedOption}
-            selectedOption={this.state.selectedOption}
-          />
+          <Redirect to="/" />
         </div>
+
+        <OptionModal
+          handleSelectedOption={this.handleSelectedOption}
+          selectedOption={this.state.selectedOption}
+        />
       </HashRouter>
     );
   }

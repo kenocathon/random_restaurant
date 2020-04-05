@@ -3,10 +3,7 @@ import { withRouter } from "react-router-dom";
 
 class ProfileForm extends React.Component {
   state = {
-    error: "", // set by handleChange as a controlled input.
-    firstName: "",
-    lastName: "",
-    eMail: ""
+    error: "",
   };
 
   handleErrors = event => {
@@ -22,23 +19,17 @@ class ProfileForm extends React.Component {
 
   handleChangeFirstName = event => {
     const firstName = event.target.value;
-    this.setState({
-      firstName
-    });
+    this.props.handleFirstName(firstName)
   };
 
   handleChangeLastName = event => {
     const lastName = event.target.value;
-    this.setState({
-      lastName
-    });
+    this.props.handleLastName(lastName)
   };
 
   handleChangeEmail = event => {
     const eMail = event.target.value;
-    this.setState({
-      eMail
-    });
+    this.props.handleEmail(eMail)
   };
 
   handleChangeFavoriteRestaurant = event => {
@@ -62,7 +53,7 @@ class ProfileForm extends React.Component {
               name="fname"
               id="fname"
               required="required"
-              value={this.state.firstName}
+              value={this.props.firstName}
               onChange={this.handleChangeFirstName}
             />
           </div>
@@ -74,7 +65,7 @@ class ProfileForm extends React.Component {
               name="lname"
               id="lname"
               required="required"
-              value={this.state.lastName}
+              value={this.props.lastName}
               onChange={this.handleChangeLastName}
             />
           </div>
@@ -86,7 +77,7 @@ class ProfileForm extends React.Component {
               name="mail"
               id="mail"
               required="required"
-              value={this.state.eMail}
+              value={this.props.eMail}
               onChange={this.handleChangeEmail}
             />
           </div>
